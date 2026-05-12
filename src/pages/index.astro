@@ -1,11 +1,51 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import Layout from "../layouts/Layout.astro";
+import Nav from "../components/Nav.astro";
+import Hero from "../components/Hero.astro";
+import SnippetBar from "../components/SnippetBar.astro";
+import Services from "../components/Services.astro";
+import LogoMarquee from "../components/LogoMarquee.astro";
+import WhyCWS from "../components/WhyCWS.astro";
+import PullQuote from "../components/PullQuote.astro";
+import Reviews from "../components/Reviews.astro";
+import CTA from "../components/CTA.astro";
+import Footer from "../components/Footer.astro";
+import WhatsappFloat from "../components/WhatsappFloat.astro";
 ---
 
 <Layout>
-	<Welcome />
+	<Nav />
+	<main>
+		<Hero />
+		<SnippetBar />
+		<Services />
+		<LogoMarquee />
+		<WhyCWS />
+		<PullQuote />
+		<Reviews />
+		<CTA />
+	</main>
+	<Footer />
+	<WhatsappFloat />
 </Layout>
+
+<script>
+	const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+	if (!reduce) {
+		const io = new IntersectionObserver(
+			(entries) => {
+				for (const e of entries) {
+					if (e.isIntersecting) {
+						e.target.classList.add("is-in");
+						io.unobserve(e.target);
+					}
+				}
+			},
+			{ threshold: 0.12, rootMargin: "0px 0px -40px 0px" }
+		);
+		document.querySelectorAll(".reveal").forEach((el) => io.observe(el));
+	} else {
+		document.querySelectorAll(".reveal").forEach((el) => el.classList.add("is-in"));
+	}
+</script>

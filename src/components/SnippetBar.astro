@@ -1,0 +1,128 @@
+---
+const a = [
+	{ q: "We ended up with a website better than we could have imagined.", who: "Mendy" },
+	{ q: "Above and beyond anything we could have expected.", who: "Asher" },
+	{ q: "Their craftsmanship is stellar.", who: "Aron" },
+	{ q: "Skill, talent, expertise and five star service.", who: "K" },
+	{ q: "The final website they delivered is absolutely top-notch.", who: "Ari" },
+	{ q: "They truly cared about making sure everything was perfect.", who: "Little Acorn ABA" },
+	{ q: "They made such an effort to get to know me so that my website would reflect who I am.", who: "Mindy" },
+	{ q: "The final product is beautiful, professional, and exactly what we envisioned.", who: "Juda" },
+	{ q: "Offered smart advice while still staying true to what I wanted.", who: "Issac" },
+];
+
+const b = [
+	{ q: "They actually listen!", who: "Mordechai" },
+	{ q: "Couldn't have asked for a more professional and pleasant company to work with!", who: "Alan" },
+	{ q: "The process was smooth, well-coordinated, and professional from start to finish.", who: "Bright Peak ABA" },
+	{ q: "The entire process felt smooth and professional.", who: "Mimi" },
+	{ q: "Made the whole experience smooth and stress-free.", who: "Ari" },
+	{ q: "My gratitude knows no bounds. I'm seriously thrilled!", who: "Mindy" },
+	{ q: "WOW! WOW! WOW! Amazing work done!", who: "Moshe" },
+	{ q: "You guys are incredible!!! Really impressive work.", who: "Joe" },
+	{ q: "So glad to have found you all!", who: "Josh" },
+];
+
+const aDup = [...a, ...a];
+const bDup = [...b, ...b];
+---
+
+<section class="snippets" aria-label="What clients say">
+	<div class="row" data-row>
+		<div class="track">
+			{
+				aDup.map((it, i) => (
+					<figure class="snip" data-i={i}>
+						<blockquote>"{it.q}"</blockquote>
+						<figcaption>— {it.who}</figcaption>
+					</figure>
+				))
+			}
+		</div>
+	</div>
+
+	<div class="row reverse" data-row>
+		<div class="track">
+			{
+				bDup.map((it, i) => (
+					<figure class="snip alt" data-i={i}>
+						<blockquote>"{it.q}"</blockquote>
+						<figcaption>— {it.who}</figcaption>
+					</figure>
+				))
+			}
+		</div>
+	</div>
+</section>
+
+<style>
+	.snippets {
+		padding: clamp(36px, 5vw, 72px) 0;
+		background: var(--paper);
+		overflow: hidden;
+	}
+
+	.row {
+		display: flex;
+		overflow: hidden;
+		mask-image: linear-gradient(to right, transparent 0%, #000 8%, #000 92%, transparent 100%);
+		-webkit-mask-image: linear-gradient(to right, transparent 0%, #000 8%, #000 92%, transparent 100%);
+	}
+	.row + .row { margin-top: 16px; }
+
+	.track {
+		display: flex;
+		gap: 14px;
+		flex-shrink: 0;
+		animation: scroll 60s linear infinite;
+		padding-right: 14px;
+	}
+	.row.reverse .track {
+		animation-direction: reverse;
+		animation-duration: 72s;
+	}
+	@keyframes scroll {
+		from { transform: translateX(0); }
+		to { transform: translateX(-50%); }
+	}
+
+	.row:hover .track { animation-play-state: paused; }
+
+	.snip {
+		flex-shrink: 0;
+		display: inline-flex;
+		align-items: center;
+		gap: 12px;
+		padding: 16px 26px;
+		border: 1px solid var(--hairline);
+		border-radius: 999px;
+		background: #fff;
+		margin: 0;
+		transition: border-color 0.3s ease, background 0.3s ease, transform 0.3s ease;
+	}
+	.snip.alt { background: var(--teal-wash); border-color: transparent; }
+	.snip:hover { border-color: var(--teal); transform: translateY(-2px); }
+
+	.snip blockquote {
+		margin: 0;
+		font-size: 0.96rem;
+		font-weight: 500;
+		color: var(--teal-ink);
+		line-height: 1.35;
+		letter-spacing: -0.005em;
+		white-space: nowrap;
+	}
+
+	.snip figcaption {
+		font-size: 0.86rem;
+		font-weight: 700;
+		color: var(--orange);
+		flex-shrink: 0;
+		white-space: nowrap;
+	}
+
+	@media (max-width: 600px) {
+		.snip { padding: 14px 20px; }
+		.snip blockquote { white-space: normal; max-width: 280px; }
+	}
+</style>

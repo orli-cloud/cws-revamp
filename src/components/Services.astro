@@ -1,0 +1,649 @@
+---
+const services = [
+	{
+		key: "websites",
+		title: "Websites",
+		blurb: "Express or Custom. Copy, design, and development handled in-house.",
+		cta: "See websites we've done",
+		bg: "https://cms-cdn.cwsio.com/wp-content/uploads/2025/04/Sunray-ABA-1-Thumbnail.jpg",
+		accent: "var(--teal)",
+		samples: [
+			{ name: "Sunray ABA", img: "https://cms-cdn.cwsio.com/wp-content/uploads/2025/04/Sunray-ABA-1-Thumbnail.jpg" },
+			{ name: "Cignature Financial", img: "https://cms-cdn.cwsio.com/wp-content/uploads/2024/01/Cignature-Financial-1-Thumbnail.jpg" },
+			{ name: "Move Up ABA", img: "https://cms-cdn.cwsio.com/wp-content/uploads/2024/02/Move-Up-ABA-1-Thumbnail.jpg" },
+			{ name: "Little Acorn", img: "https://cms-cdn.cwsio.com/wp-content/uploads/2025/10/Little-Acorn-1.jpg" },
+			{ name: "American Physiatry", img: "https://cms-cdn.cwsio.com/wp-content/uploads/2024/10/American-Physiatry-1-Thumbnail.jpg" },
+			{ name: "Spring Oak", img: "https://cms-cdn.cwsio.com/wp-content/uploads/2025/04/Spring-Oak-1-Thumbnail.jpg" },
+		],
+	},
+	{
+		key: "seo",
+		title: "SEO",
+		blurb: "Strategy, content, and technical work that keeps compounding.",
+		cta: "See SEO case studies",
+		bg: "https://cms-cdn.cwsio.com/wp-content/uploads/2025/01/Bright-Bridge-ABA-1-Thumbnail.jpg",
+		accent: "var(--gold)",
+		samples: [
+			{ name: "Bright Bridge ABA", img: "https://cms-cdn.cwsio.com/wp-content/uploads/2025/01/Bright-Bridge-ABA-1-Thumbnail.jpg" },
+			{ name: "Behavioral Milestones", img: "https://cms-cdn.cwsio.com/wp-content/uploads/2025/04/Behavioral-Milestones-1-Thumbnail.jpg" },
+			{ name: "Advance ABA", img: "https://cms-cdn.cwsio.com/wp-content/uploads/2025/01/Advance-ABA-1-Thumbnail.jpg" },
+			{ name: "Storybook ABA", img: "https://cms-cdn.cwsio.com/wp-content/uploads/2025/01/Storybook-ABA-1-Thumbnail.jpg" },
+		],
+	},
+	{
+		key: "branding",
+		title: "Brand and logo design",
+		blurb: "Identity systems your business deserves to wear.",
+		cta: "See more branding projects",
+		bg: "https://cms-cdn.cwsio.com/wp-content/uploads/2025/04/Nesivos-1-Thumbnail.jpg",
+		accent: "var(--orange)",
+		samples: [
+			{ name: "Nesivos", img: "https://cms-cdn.cwsio.com/wp-content/uploads/2025/04/Nesivos-1-Thumbnail.jpg" },
+			{ name: "Allure Wholesales", img: "https://cms-cdn.cwsio.com/wp-content/uploads/2025/04/Allure-Wholesales-4-Thumbnail.jpg" },
+			{ name: "The Gerald Klein", img: "https://cms-cdn.cwsio.com/wp-content/uploads/2024/05/The-Gerald-Klein-1-Thumbnail.jpg" },
+			{ name: "Zenrock Capital", img: "https://cms-cdn.cwsio.com/wp-content/uploads/2025/01/Zenrock-Capital-1-Thumbnail.jpg" },
+		],
+	},
+	{
+		key: "custom",
+		title: "Custom systems",
+		blurb: "Bespoke web apps and tools built around how you actually work.",
+		cta: "See custom projects",
+		bg: "https://cms-cdn.cwsio.com/wp-content/uploads/2024/10/Filescan-Solutions-6-Thumbnail.jpg",
+		accent: "var(--teal)",
+		samples: [
+			{ name: "Filescan Solutions", img: "https://cms-cdn.cwsio.com/wp-content/uploads/2024/10/Filescan-Solutions-6-Thumbnail.jpg" },
+			{ name: "Therapy Management Solutions", img: "https://cms-cdn.cwsio.com/wp-content/uploads/2024/02/Therapy-Management-Solutions-1-Thumbnail.jpg" },
+			{ name: "OnePoint Management", img: "https://cms-cdn.cwsio.com/wp-content/uploads/2023/12/OnePoint-Management-1-Thumbnail.jpg" },
+		],
+	},
+];
+
+services.push(
+	{
+		key: "marketing",
+		title: "Marketing + Printing",
+		blurb: "Print, decks, social — cohesive across every touchpoint.",
+		cta: "See the work",
+		bg: "https://cms-cdn.cwsio.com/wp-content/uploads/2025/08/New-Styles-Sign-1-Thumbnail.jpg",
+		accent: "var(--orange)",
+		samples: [
+			{ name: "New Styles Sign", img: "https://cms-cdn.cwsio.com/wp-content/uploads/2025/08/New-Styles-Sign-1-Thumbnail.jpg" },
+			{ name: "Mindy Blumenfeld", img: "https://cms-cdn.cwsio.com/wp-content/uploads/2024/01/Mindy-Blumenfeld-LCSW-1-Thumbnail.jpg" },
+		],
+	},
+	{
+		key: "care",
+		title: "Maintenance & hosting",
+		blurb: "Always-on care so your site keeps quietly working.",
+		cta: "See the work",
+		bg: "https://cms-cdn.cwsio.com/wp-content/uploads/2024/01/Heisinger-Bluffs-1-Thumbnail.jpg",
+		accent: "var(--gold)",
+		samples: [
+			{ name: "Heisinger Bluffs", img: "https://cms-cdn.cwsio.com/wp-content/uploads/2024/01/Heisinger-Bluffs-1-Thumbnail.jpg" },
+			{ name: "Maple Leaf Healthcare", img: "https://cms-cdn.cwsio.com/wp-content/uploads/2024/01/Maple-Leaf-Healthcare-1-Thumbnail.jpg" },
+		],
+	}
+);
+const allServices = services;
+const left = services.slice(0, 3);
+const right = services.slice(3, 6);
+---
+
+<section id="services" class="services" data-svc-zone>
+	<div class="wrap">
+		<div class="svc-grid">
+			<!-- Sticky title spans both columns, sits behind the cards -->
+			<div class="svc-center reveal">
+				<h2 class="display svc-title">
+					<span class="line">Whatever you need,</span>
+					<span class="line"><em>we're here to help.</em></span>
+				</h2>
+				<p class="svc-sub">
+					One in-house team of 35+ experts, all working toward the same goal.<br />
+					Yours.
+				</p>
+			</div>
+
+			<div class="svc-col svc-col-l">
+				{
+					left.map((s) => (
+						<button
+							type="button"
+							class="svc-card reveal"
+							style={`--bg-img:url(${s.bg});--accent:${s.accent}`}
+							data-panel-trigger={s.key}
+							data-cta={s.cta}
+						>
+							<div class="svc-img" aria-hidden="true"></div>
+							<div class="svc-meta">
+								<h3 class="svc-name">{s.title}</h3>
+								<p class="svc-role">{s.blurb}</p>
+							</div>
+						</button>
+					))
+				}
+			</div>
+
+			<div class="svc-col svc-col-r">
+				{
+					right.map((s) => (
+						<button
+							type="button"
+							class="svc-card reveal"
+							style={`--bg-img:url(${s.bg});--accent:${s.accent}`}
+							data-panel-trigger={s.key}
+							data-cta={s.cta}
+						>
+							<div class="svc-img" aria-hidden="true"></div>
+							<div class="svc-meta">
+								<h3 class="svc-name">{s.title}</h3>
+								<p class="svc-role">{s.blurb}</p>
+							</div>
+						</button>
+					))
+				}
+			</div>
+		</div>
+	</div>
+
+	<!-- Cursor-following: separate arrow icon + pill (lindmore style) -->
+	<div class="svc-cursor" data-svc-cursor aria-hidden="true">
+		<svg class="cursor-arrow" viewBox="0 0 24 24" width="28" height="28" aria-hidden="true">
+			<path
+				d="M3 2 L 3 18 L 8 14 L 11 21 L 14 19.5 L 11 13 L 17 13 Z"
+				fill="var(--teal-ink)"
+				stroke="#fff"
+				stroke-width="1.5"
+				stroke-linejoin="round"
+			/>
+		</svg>
+		<span class="cursor-pill">
+			<span data-cursor-text>See websites we've done</span>
+		</span>
+	</div>
+
+	<!-- Slide-in side panel -->
+	<aside class="panel" data-panel aria-hidden="true" aria-label="Service details">
+		<div class="panel-overlay" data-panel-close></div>
+		<div class="panel-body">
+			<header class="panel-head">
+				<div>
+					<span class="panel-eyebrow" data-panel-eyebrow>Services</span>
+					<h3 class="display panel-title" data-panel-title>Title</h3>
+				</div>
+				<button type="button" class="panel-close" data-panel-close aria-label="Close panel">
+					<svg viewBox="0 0 24 24" width="16" height="16">
+						<path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+					</svg>
+				</button>
+			</header>
+			<p class="panel-blurb" data-panel-blurb></p>
+			<div class="panel-grid" data-panel-grid></div>
+			<a href="#work" class="panel-cta">
+				See full case studies
+				<svg viewBox="0 0 24 24" width="14" height="14">
+					<path d="M5 12h14M13 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+				</svg>
+			</a>
+		</div>
+	</aside>
+
+	<script type="application/json" data-panel-data set:html={JSON.stringify(allServices)}></script>
+</section>
+
+<style>
+	.services {
+		position: relative;
+		padding: clamp(60px, 8vw, 100px) 0 clamp(60px, 8vw, 110px);
+		background: var(--teal-ink);
+		color: var(--paper);
+		isolation: isolate;
+	}
+
+	/* 3-column grid: cards + middle breathing space + cards */
+	.svc-grid {
+		display: grid;
+		grid-template-columns: 1fr 0.35fr 1fr;
+		gap: clamp(16px, 2vw, 32px);
+		align-items: start;
+		position: relative;
+	}
+
+	/* Sticky title overlay — spans full grid width, sits BEHIND cards */
+	.svc-center {
+		grid-column: 1 / -1;
+		grid-row: 1;
+		position: sticky;
+		top: 0;
+		height: 100vh;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		text-align: center;
+		padding: 0 8px;
+		z-index: 1;
+		pointer-events: none;
+	}
+	.svc-center > * { pointer-events: auto; }
+
+	/* Side cards stacked vertically, sit IN FRONT of the title */
+	.svc-col {
+		display: flex;
+		flex-direction: column;
+		gap: clamp(140px, 24vh, 240px);
+		padding-top: 80vh;
+		position: relative;
+		z-index: 2;
+	}
+	.svc-col-l { grid-column: 1; grid-row: 1; }
+	.svc-col-r { grid-column: 3; grid-row: 1; padding-top: calc(80vh + 140px); }
+
+	@media (max-width: 920px) {
+		.svc-col { gap: 24px; padding-top: 0; }
+		.svc-col-l, .svc-col-r { padding-top: 0; }
+		.svc-center {
+			position: static;
+			height: auto;
+			padding: 24px 0 36px;
+			pointer-events: auto;
+		}
+	}
+	@media (max-width: 540px) {
+		.svc-grid { grid-template-columns: 1fr; }
+		.svc-col-l, .svc-col-r { grid-column: 1; }
+		.svc-col-l { grid-row: 2; }
+		.svc-col-r { grid-row: 3; }
+		.svc-center { grid-column: 1; grid-row: 1; }
+	}
+
+	/* Title */
+	.svc-title {
+		font-size: clamp(40px, 5.4vw, 78px);
+		margin: 0;
+		font-weight: 700;
+		line-height: 0.98;
+		letter-spacing: -0.035em;
+		color: var(--paper);
+	}
+	.svc-title .line {
+		display: block;
+		white-space: nowrap;
+	}
+	.svc-title em {
+		font-style: normal;
+		color: var(--orange);
+	}
+	.svc-sub {
+		margin: 22px 0 0;
+		max-width: 720px;
+		font-size: 1.05rem;
+		line-height: 1.55;
+		color: rgba(255, 255, 255, 0.7);
+	}
+
+	/* Cards */
+	.svc-card {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-end;
+		padding: 0;
+		border: none;
+		border-radius: 24px;
+		overflow: hidden;
+		background: var(--accent);
+		color: #fff;
+		text-align: left;
+		font-family: inherit;
+		cursor: none;
+		min-height: 320px;
+		isolation: isolate;
+	}
+	.svc-img {
+		position: absolute;
+		inset: 0;
+		background-image: var(--bg-img);
+		background-size: cover;
+		background-position: center;
+		transform: scale(1);
+		transition: transform 0.7s cubic-bezier(0.2, 0.7, 0.1, 1), filter 0.4s ease;
+		z-index: 0;
+	}
+	.svc-card::after {
+		content: "";
+		position: absolute;
+		inset: 0;
+		background: linear-gradient(180deg, transparent 30%, rgba(8, 43, 54, 0.85) 100%);
+		z-index: 1;
+		pointer-events: none;
+	}
+	.svc-meta {
+		position: relative;
+		z-index: 2;
+		padding: 24px 26px 26px;
+		display: flex;
+		flex-direction: column;
+		gap: 6px;
+	}
+	.svc-name {
+		font-family: var(--font-sans);
+		font-weight: 700;
+		letter-spacing: -0.025em;
+		font-size: clamp(24px, 2.6vw, 36px);
+		line-height: 1.05;
+		margin: 0;
+		color: #fff;
+	}
+	.svc-role {
+		margin: 0;
+		font-size: 0.9rem;
+		line-height: 1.5;
+		color: rgba(255, 255, 255, 0.78);
+		max-width: 36ch;
+	}
+
+	.svc-card:hover .svc-img { transform: scale(1.06); }
+
+	/* Smaller secondary services row */
+	.svc-more {
+		display: flex;
+		gap: 14px;
+		flex-wrap: wrap;
+		justify-content: center;
+		margin-top: 28px;
+	}
+	.svc-mini {
+		display: inline-flex;
+		align-items: center;
+		gap: 12px;
+		padding: 16px 20px 16px 24px;
+		border: 1px solid rgba(255, 255, 255, 0.18);
+		background: rgba(255, 255, 255, 0.04);
+		color: var(--paper);
+		border-radius: 999px;
+		font-family: inherit;
+		font-weight: 600;
+		font-size: 0.95rem;
+		cursor: none;
+		transition: background 0.3s ease, border-color 0.3s ease, gap 0.3s ease;
+	}
+	.svc-mini:hover {
+		background: var(--orange);
+		border-color: var(--orange);
+		gap: 16px;
+	}
+	.mini-arrow {
+		display: inline-flex;
+		width: 28px;
+		height: 28px;
+		align-items: center;
+		justify-content: center;
+		border-radius: 50%;
+		background: rgba(255, 255, 255, 0.18);
+		transition: background 0.3s ease;
+	}
+
+	/* Cursor-following: separate arrow + pill with gap */
+	.svc-cursor {
+		position: fixed;
+		top: 0;
+		left: 0;
+		pointer-events: none;
+		opacity: 0;
+		z-index: 200;
+		transform: translate3d(-200px, -200px, 0);
+		transition: opacity 0.2s ease;
+	}
+	.svc-cursor.is-on { opacity: 1; }
+
+	.cursor-arrow {
+		position: absolute;
+		top: 0;
+		left: 0;
+		filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.45));
+	}
+
+	.cursor-pill {
+		position: absolute;
+		top: 12px;
+		left: 38px; /* 28px arrow + 10px gap */
+		display: inline-flex;
+		align-items: center;
+		padding: 10px 18px;
+		background: var(--orange);
+		color: #fff;
+		border-radius: 999px;
+		font-family: var(--font-sans);
+		font-weight: 700;
+		font-size: 0.86rem;
+		white-space: nowrap;
+		box-shadow: 0 14px 30px -10px rgba(247, 128, 64, 0.55);
+		animation: cursor-bob 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+	}
+	@keyframes cursor-bob {
+		0%, 100% { transform: translateY(0); }
+		50% { transform: translateY(-3px); }
+	}
+
+	/* Side panel */
+	.panel {
+		position: fixed;
+		inset: 0;
+		z-index: 90;
+		pointer-events: none;
+	}
+	.panel.is-open { pointer-events: auto; }
+	.panel-overlay {
+		position: absolute;
+		inset: 0;
+		background: rgba(8, 43, 54, 0.55);
+		opacity: 0;
+		transition: opacity 0.4s cubic-bezier(0.2, 0.7, 0.1, 1);
+		backdrop-filter: blur(2px);
+	}
+	.panel.is-open .panel-overlay { opacity: 1; }
+
+	.panel-body {
+		position: absolute;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		width: min(560px, 92vw);
+		background: var(--paper);
+		color: var(--ink);
+		padding: clamp(28px, 3vw, 40px);
+		overflow-y: auto;
+		display: flex;
+		flex-direction: column;
+		gap: 20px;
+		transform: translateX(100%);
+		transition: transform 0.55s cubic-bezier(0.7, 0, 0.2, 1);
+		box-shadow: -24px 0 60px -20px rgba(8, 43, 54, 0.35);
+	}
+	.panel.is-open .panel-body { transform: translateX(0); }
+
+	.panel-head {
+		display: flex;
+		justify-content: space-between;
+		align-items: flex-start;
+		gap: 16px;
+		padding-bottom: 16px;
+		border-bottom: 1px solid var(--hairline);
+	}
+	.panel-eyebrow {
+		display: inline-block;
+		font-size: 0.74rem;
+		font-weight: 700;
+		letter-spacing: 0.22em;
+		text-transform: uppercase;
+		color: var(--orange);
+		margin-bottom: 8px;
+	}
+	.panel-title {
+		font-size: clamp(28px, 3vw, 44px);
+		margin: 0;
+		line-height: 1.05;
+		color: var(--teal-ink);
+	}
+	.panel-close {
+		flex-shrink: 0;
+		width: 40px;
+		height: 40px;
+		border-radius: 50%;
+		background: var(--teal-ink);
+		color: #fff;
+		border: none;
+		display: grid;
+		place-items: center;
+		cursor: pointer;
+		transition: background 0.25s ease, transform 0.25s ease;
+	}
+	.panel-close:hover { background: var(--orange); transform: rotate(90deg); }
+	.panel-blurb {
+		font-size: 0.98rem;
+		line-height: 1.55;
+		color: var(--ink-mute);
+		margin: 0;
+	}
+	.panel-grid {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		gap: 12px;
+	}
+	.panel-grid figure {
+		margin: 0;
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+	}
+	.panel-grid img {
+		width: 100%;
+		aspect-ratio: 4 / 3;
+		object-fit: cover;
+		border-radius: 12px;
+		border: 1px solid var(--hairline);
+		transition: transform 0.4s ease;
+	}
+	.panel-grid figure:hover img { transform: scale(1.03); }
+	.panel-grid figcaption {
+		font-size: 0.86rem;
+		font-weight: 600;
+		color: var(--teal-ink);
+	}
+	.panel-cta {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		gap: 10px;
+		padding: 16px 24px;
+		background: var(--teal-ink);
+		color: #fff;
+		border-radius: 999px;
+		font-weight: 600;
+		margin-top: auto;
+		transition: background 0.25s ease, gap 0.25s ease;
+	}
+	.panel-cta:hover { background: var(--orange); gap: 14px; }
+
+	@media (hover: none) {
+		.svc-card, .svc-mini { cursor: pointer; }
+		.svc-cursor { display: none; }
+	}
+</style>
+
+<script>
+	const dataEl = document.querySelector<HTMLScriptElement>("[data-panel-data]");
+	const panel = document.querySelector<HTMLElement>("[data-panel]");
+	const eyebrowEl = document.querySelector<HTMLElement>("[data-panel-eyebrow]");
+	const titleEl = document.querySelector<HTMLElement>("[data-panel-title]");
+	const blurbEl = document.querySelector<HTMLElement>("[data-panel-blurb]");
+	const gridEl = document.querySelector<HTMLElement>("[data-panel-grid]");
+	const zone = document.querySelector<HTMLElement>("[data-svc-zone]");
+	const svcCursor = document.querySelector<HTMLElement>("[data-svc-cursor]");
+	const cursorText = document.querySelector<HTMLElement>("[data-cursor-text]");
+	const isTouch = window.matchMedia("(hover: none)").matches;
+
+	type Sample = { name: string; img: string };
+	type Service = { key: string; title: string; blurb: string; cta: string; samples: Sample[] };
+
+	if (dataEl && panel && titleEl && blurbEl && gridEl) {
+		const services: Service[] = JSON.parse(dataEl.textContent || "[]");
+		const byKey = new Map(services.map((s) => [s.key, s]));
+
+		const open = (key: string) => {
+			const s = byKey.get(key);
+			if (!s) return;
+			if (eyebrowEl) eyebrowEl.textContent = "Selected work";
+			titleEl.textContent = s.title;
+			blurbEl.textContent = s.blurb;
+			gridEl.innerHTML = s.samples
+				.map(
+					(item) =>
+						`<figure><img src="${item.img}" alt="${item.name}" loading="lazy" /><figcaption>${item.name}</figcaption></figure>`
+				)
+				.join("");
+			panel.classList.add("is-open");
+			panel.setAttribute("aria-hidden", "false");
+			document.body.style.overflow = "hidden";
+		};
+		const close = () => {
+			panel.classList.remove("is-open");
+			panel.setAttribute("aria-hidden", "true");
+			document.body.style.overflow = "";
+		};
+
+		document.querySelectorAll<HTMLElement>("[data-panel-trigger]").forEach((btn) => {
+			btn.addEventListener("click", () => {
+				const key = btn.dataset.panelTrigger;
+				if (key) open(key);
+			});
+		});
+		document.querySelectorAll<HTMLElement>("[data-panel-close]").forEach((el) => {
+			el.addEventListener("click", close);
+		});
+		document.addEventListener("keydown", (e) => {
+			if (e.key === "Escape") close();
+		});
+	}
+
+	// Cursor-following pill — appears over service cards/minis with their CTA text
+	if (zone && svcCursor && cursorText && !isTouch) {
+		let raf = 0, sx = 0, sy = 0, mx = 0, my = 0;
+		const tick = () => {
+			sx += (mx - sx) * 0.28;
+			sy += (my - sy) * 0.28;
+			svcCursor.style.transform = `translate3d(${sx}px, ${sy}px, 0)`;
+			if (Math.abs(mx - sx) > 0.3 || Math.abs(my - sy) > 0.3) {
+				raf = requestAnimationFrame(tick);
+			} else {
+				raf = 0;
+			}
+		};
+
+		const show = (text: string, e: MouseEvent) => {
+			cursorText.textContent = text;
+			mx = e.clientX;
+			my = e.clientY;
+			sx = mx;
+			sy = my;
+			svcCursor.style.transform = `translate3d(${sx}px, ${sy}px, 0)`;
+			svcCursor.classList.add("is-on");
+		};
+		const hide = () => {
+			svcCursor.classList.remove("is-on");
+		};
+		const onMove = (e: MouseEvent) => {
+			mx = e.clientX;
+			my = e.clientY;
+			if (!raf) raf = requestAnimationFrame(tick);
+		};
+
+		zone.querySelectorAll<HTMLElement>("[data-cta]").forEach((el) => {
+			el.addEventListener("mouseenter", (e) => show(el.dataset.cta || "", e as MouseEvent));
+			el.addEventListener("mousemove", onMove);
+			el.addEventListener("mouseleave", hide);
+		});
+	}
+</script>

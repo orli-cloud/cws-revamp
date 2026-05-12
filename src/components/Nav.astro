@@ -1,0 +1,211 @@
+---
+const links = [
+	{ href: "#work", label: "Work" },
+	{ href: "#services", label: "Services" },
+	{ href: "#why", label: "Why us" },
+	{ href: "#testimonials", label: "Reviews" },
+	{ href: "#contact", label: "Contact" },
+];
+---
+
+<header class="nav">
+	<div class="nav-rail">
+		<a href="/" class="brand" aria-label="Creative Web Services — home">
+			<img src="/cws-logo-real.svg" alt="Creative Web Services" />
+		</a>
+
+		<nav class="links" aria-label="Primary">
+			<span class="links-bg" data-bg></span>
+			{
+				links.map((l, i) => (
+					<a href={l.href} data-link>
+						<span class="link-label">{l.label}</span>
+					</a>
+				))
+			}
+		</nav>
+
+		<a href="#contact" class="nav-cta" data-cta>
+			<span class="cta-text">
+				<span class="cta-line">Start a project</span>
+				<span class="cta-line">Get in touch</span>
+			</span>
+			<span class="cta-arrow" aria-hidden="true">
+				<svg viewBox="0 0 24 24" width="14" height="14">
+					<path
+						d="M5 12h14M13 5l7 7-7 7"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="2"
+						stroke-linecap="round"
+						stroke-linejoin="round"></path>
+				</svg>
+			</span>
+		</a>
+	</div>
+</header>
+
+<style>
+	.nav {
+		position: sticky;
+		top: 0;
+		z-index: 50;
+		padding: 16px var(--gutter) 0;
+		pointer-events: none;
+	}
+
+	.nav-rail {
+		pointer-events: auto;
+		max-width: 1240px;
+		margin: 0 auto;
+		display: grid;
+		grid-template-columns: auto 1fr auto;
+		align-items: center;
+		gap: 24px;
+		padding: 10px 14px 10px 22px;
+		background: rgba(250, 250, 246, 0.78);
+		backdrop-filter: blur(18px) saturate(170%);
+		-webkit-backdrop-filter: blur(18px) saturate(170%);
+		border: 1px solid var(--hairline);
+		border-radius: 999px;
+		box-shadow:
+			0 1px 0 rgba(255, 255, 255, 0.7) inset,
+			0 14px 40px -22px rgba(8, 43, 54, 0.22);
+	}
+
+	.brand {
+		display: inline-flex;
+		align-items: center;
+		gap: 12px;
+		padding-right: 8px;
+		border-right: 1px solid var(--hairline);
+	}
+	.brand img {
+		height: 38px;
+		width: auto;
+		display: block;
+	}
+
+	.links {
+		position: relative;
+		display: flex;
+		justify-content: center;
+		gap: 2px;
+	}
+	.links-bg {
+		position: absolute;
+		top: 50%;
+		left: 0;
+		width: 0;
+		height: 36px;
+		background: var(--teal-soft);
+		border-radius: 999px;
+		transform: translate3d(0, -50%, 0);
+		transition:
+			transform 0.45s cubic-bezier(0.2, 0.7, 0.1, 1),
+			width 0.45s cubic-bezier(0.2, 0.7, 0.1, 1),
+			opacity 0.3s ease;
+		opacity: 0;
+		pointer-events: none;
+		z-index: 0;
+	}
+	.links.is-active .links-bg {
+		opacity: 1;
+	}
+	.links a {
+		display: inline-flex;
+		align-items: center;
+		padding: 9px 16px;
+		font-size: 0.92rem;
+		font-weight: 500;
+		color: var(--teal-deep);
+		border-radius: 999px;
+		transition: color 0.25s ease;
+		position: relative;
+		z-index: 1;
+	}
+	.links a:hover {
+		color: var(--teal-ink);
+	}
+
+	.nav-cta {
+		position: relative;
+		display: inline-flex;
+		align-items: center;
+		gap: 12px;
+		padding: 11px 8px 11px 20px;
+		background: var(--teal-ink);
+		color: var(--paper);
+		border-radius: 999px;
+		font-size: 0.9rem;
+		font-weight: 600;
+		letter-spacing: -0.005em;
+		transition: background 0.3s ease;
+		overflow: hidden;
+	}
+	.nav-cta:hover {
+		background: var(--orange);
+	}
+	.cta-text {
+		position: relative;
+		display: inline-block;
+		height: 1.1em;
+		overflow: hidden;
+	}
+	.cta-line {
+		display: block;
+		transition: transform 0.45s cubic-bezier(0.7, 0, 0.2, 1);
+	}
+	.nav-cta:hover .cta-line {
+		transform: translateY(-100%);
+	}
+	.cta-arrow {
+		display: inline-flex;
+		width: 28px;
+		height: 28px;
+		align-items: center;
+		justify-content: center;
+		border-radius: 50%;
+		background: var(--paper);
+		color: var(--teal-ink);
+		transition: transform 0.4s cubic-bezier(0.7, 0, 0.2, 1);
+	}
+	.nav-cta:hover .cta-arrow {
+		transform: rotate(-45deg);
+		background: var(--paper);
+		color: var(--orange);
+	}
+
+	@media (max-width: 880px) {
+		.links { display: none; }
+		.nav-rail { grid-template-columns: 1fr auto; gap: 12px; padding: 8px 8px 8px 16px; }
+		.brand { padding-right: 0; border-right: none; }
+		.brand img { height: 32px; }
+	}
+
+	@media (max-width: 480px) {
+		.cta-line { font-size: 0.84rem; }
+		.nav-cta { padding-left: 16px; }
+	}
+</style>
+
+<script>
+	// Sliding pill background that follows hovered nav link
+	const linksContainer = document.querySelector<HTMLElement>(".links");
+	const bg = document.querySelector<HTMLElement>("[data-bg]");
+	if (linksContainer && bg) {
+		const items = linksContainer.querySelectorAll<HTMLElement>("[data-link]");
+		items.forEach((el) => {
+			el.addEventListener("mouseenter", () => {
+				const r = el.getBoundingClientRect();
+				const parentR = linksContainer.getBoundingClientRect();
+				bg.style.width = `${r.width}px`;
+				bg.style.transform = `translate3d(${r.left - parentR.left}px, -50%, 0)`;
+				linksContainer.classList.add("is-active");
+			});
+		});
+		linksContainer.addEventListener("mouseleave", () => {
+			linksContainer.classList.remove("is-active");
+		});
+	}
+</script>
