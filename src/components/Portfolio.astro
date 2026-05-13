@@ -28,14 +28,9 @@ const rowB = [
 	<div class="folio-bg" aria-hidden="true"></div>
 
 	<header class="folio-head wrap reveal">
-		<span class="eyebrow">Selected work</span>
 		<h2 class="display folio-title">
 			Sites we're <span class="ital">proud of.</span>
 		</h2>
-		<p class="folio-sub">
-			A glimpse at recent projects. Hover to pause — every one built from scratch
-			to its brand.
-		</p>
 	</header>
 
 	<div class="rails" data-folio>
@@ -128,22 +123,20 @@ const rowB = [
 		display: flex;
 		flex-direction: column;
 		gap: 18px;
-		max-width: 760px;
 		margin-bottom: clamp(40px, 5vw, 64px);
 	}
 	.folio-head .eyebrow { color: var(--gold); }
 	.folio-head .eyebrow::before { background: var(--gold); }
 	.folio-title {
-		font-size: clamp(40px, 5.6vw, 84px);
+		font-size: clamp(36px, 5vw, 76px);
 		margin: 0;
 		color: var(--paper);
+		white-space: nowrap;
 	}
 	.folio-title .ital { color: var(--orange); }
-	.folio-sub {
-		font-size: clamp(15px, 1.1vw, 18px);
-		color: rgba(250, 250, 246, 0.7);
-		margin: 0;
-		max-width: 520px;
+
+	@media (max-width: 720px) {
+		.folio-title { white-space: normal; }
 	}
 
 	.rails {
