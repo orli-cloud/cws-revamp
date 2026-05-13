@@ -42,7 +42,7 @@ const pillars = [
 				<span class="ital">choose CWS.</span>
 			</h2>
 			<p class="why-sub">
-				Your project is our project. And that project is in good hands.
+				Your project is our project.<br />And that project is in good hands.
 			</p>
 		</header>
 
@@ -95,23 +95,13 @@ const pillars = [
 	</div>
 
 	<div class="why-cursor" data-flip-cursor aria-hidden="true">
-		<svg class="why-arrow" viewBox="0 0 32 32" width="48" height="48" aria-hidden="true">
-			<path
-				d="M 7 6 L 24.5 13.5 Q 26 14 24.5 14.7 L 16.4 16.7 Q 16 17 15.9 17.7 L 13.3 26 Q 13 27 12.6 26 L 6.5 6.5 Q 6 5 7 6 Z"
-				fill="var(--orange)"
-				stroke="var(--teal-ink)"
-				stroke-width="1.6"
-				stroke-linejoin="round"
-				stroke-linecap="round"
-			/>
-		</svg>
-		<span class="why-pill">See the proof</span>
+		<span class="why-circle-label">Proof</span>
 	</div>
 </section>
 
 <style>
 	.why {
-		padding: clamp(36px, 5vw, 72px) 0 clamp(60px, 8vw, 120px);
+		padding: clamp(80px, 10vw, 140px) 0 clamp(60px, 8vw, 120px);
 		background: var(--paper);
 		position: relative;
 	}
@@ -133,16 +123,17 @@ const pillars = [
 
 	.why-head {
 		display: grid;
-		grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
-		gap: clamp(20px, 4vw, 64px);
+		grid-template-columns: minmax(0, 1.45fr) minmax(0, 0.55fr);
+		gap: clamp(24px, 5vw, 80px);
 		align-items: end;
 		margin-bottom: clamp(40px, 5vw, 64px);
 		position: relative;
 	}
 	.why-title {
-		font-size: clamp(40px, 5.6vw, 84px);
+		font-size: clamp(40px, 5.2vw, 76px);
 		margin: 0;
 		grid-column: 1;
+		white-space: nowrap;
 	}
 	.why-title .ital {
 		font-style: normal;
@@ -153,7 +144,7 @@ const pillars = [
 		align-self: end;
 		font-size: clamp(15px, 1.1vw, 18px);
 		color: var(--ink-mute);
-		max-width: 380px;
+		max-width: 320px;
 		margin: 0;
 		padding-bottom: 8px;
 	}
@@ -161,6 +152,7 @@ const pillars = [
 	@media (max-width: 760px) {
 		.why-head { grid-template-columns: 1fr; align-items: start; }
 		.why-title, .why-sub { grid-column: 1; }
+		.why-title { white-space: normal; }
 	}
 
 	.cards {
@@ -306,48 +298,47 @@ const pillars = [
 		color: var(--gold);
 	}
 
-	/* Custom cursor — pointer + pill (matches Services style) */
+	/* Round cursor follower */
 	.why-cursor {
 		position: fixed;
 		top: 0;
 		left: 0;
+		width: 112px;
+		height: 112px;
+		margin: -56px 0 0 -56px;
+		border-radius: 50%;
+		background: radial-gradient(circle at 30% 25%, #ffa46a 0%, var(--orange) 55%, var(--orange-deep) 100%);
+		color: #fff;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		gap: 4px;
 		pointer-events: none;
 		opacity: 0;
 		z-index: 200;
-		transform: translate3d(-200px, -200px, 0);
-		transition: opacity 0.2s ease;
-	}
-	.why-cursor.is-on { opacity: 1; }
-
-	.why-arrow {
-		position: absolute;
-		top: 0;
-		left: 0;
-		width: 48px;
-		height: 48px;
-		max-width: none;
-		filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.25));
-	}
-	.why-pill {
-		position: absolute;
-		top: 34px;
-		left: 36px;
-		display: inline-flex;
-		align-items: center;
-		padding: 10px 18px;
-		background: var(--orange);
-		color: #fff;
-		border-radius: 999px;
+		transform: translate3d(-300px, -300px, 0);
+		scale: 0.7;
+		transition: opacity 0.25s ease, scale 0.3s cubic-bezier(0.22, 0.61, 0.36, 1);
 		font-family: var(--font-sans);
 		font-weight: 700;
-		font-size: 0.86rem;
-		white-space: nowrap;
-		box-shadow: 0 14px 30px -10px rgba(247, 128, 64, 0.55);
-		animation: why-pill-bob 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+		font-size: 0.84rem;
+		line-height: 1.1;
+		text-align: center;
+		letter-spacing: -0.005em;
+		box-shadow:
+			0 18px 40px -12px rgba(247, 128, 64, 0.55),
+			inset 0 0 0 1px rgba(255, 255, 255, 0.18);
 	}
-	@keyframes why-pill-bob {
-		0%, 100% { transform: translateY(0); }
-		50% { transform: translateY(-3px); }
+	.why-cursor.is-on {
+		opacity: 1;
+		scale: 1;
+	}
+	.why-circle-label {
+		display: block;
+	}
+	.why-circle-arrow {
+		opacity: 0.95;
 	}
 </style>
 
