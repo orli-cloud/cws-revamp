@@ -1,0 +1,302 @@
+---
+const base = "https://cms-cdn.cwsio.com/wp-content/uploads/";
+
+const rowA = [
+	"2026/02/FINAL-MOCK-UP-1-3.jpg",
+	"2026/02/FINAL-MOCK-UP-1-2.jpg",
+	"2026/02/FINAL-MOCK-UP-1-1.jpg",
+	"2026/02/FINAL-MOCK-UP-1.jpg",
+	"2026/01/FINAL-MOCK-UP-1-1.jpg",
+	"2026/01/FINAL-MOCK-UP-1.jpg",
+	"2025/12/FINAL-MOCK-UP-1-1.jpg",
+	"2025/12/FINAL-MOCK-UP-1.jpg",
+].map((p) => base + p);
+
+const rowB = [
+	"2025/11/FINAL-MOCK-UP-1-2.jpg",
+	"2025/11/FINAL-MOCK-UP-1-1.jpg",
+	"2025/08/FINAL-MOCK-UP-1-8.jpg",
+	"2025/08/FINAL-MOCK-UP-1-7.jpg",
+	"2025/08/FINAL-MOCK-UP-1-6.jpg",
+	"2025/08/FINAL-MOCK-UP-1-5.jpg",
+	"2025/08/FINAL-MOCK-UP-1-2.jpg",
+	"2025/08/FINAL-MOCK-UP-1-1.jpg",
+].map((p) => base + p);
+---
+
+<section id="work" class="folio" aria-label="Selected portfolio work">
+	<div class="folio-bg" aria-hidden="true"></div>
+
+	<header class="folio-head wrap reveal">
+		<span class="eyebrow">Selected work</span>
+		<h2 class="display folio-title">
+			Sites we're <span class="ital">proud of.</span>
+		</h2>
+		<p class="folio-sub">
+			A glimpse at recent projects. Hover to pause — every one built from scratch
+			to its brand.
+		</p>
+	</header>
+
+	<div class="rails" data-folio>
+		<div class="rail rail-a">
+			<div class="track" data-track>
+				{
+					[...rowA, ...rowA].map((src, i) => (
+						<a class="tile" href="#" aria-label="Portfolio piece">
+							<img
+								src={src}
+								alt=""
+								loading="lazy"
+								decoding="async"
+								width="640"
+								height="400"
+								data-idx={i}
+							/>
+							<span class="tile-glow" aria-hidden="true" />
+						</a>
+					))
+				}
+			</div>
+		</div>
+
+		<div class="rail rail-b">
+			<div class="track" data-track>
+				{
+					[...rowB, ...rowB].map((src, i) => (
+						<a class="tile" href="#" aria-label="Portfolio piece">
+							<img
+								src={src}
+								alt=""
+								loading="lazy"
+								decoding="async"
+								width="640"
+								height="400"
+								data-idx={i}
+							/>
+							<span class="tile-glow" aria-hidden="true" />
+						</a>
+					))
+				}
+			</div>
+		</div>
+	</div>
+
+	<div class="folio-foot wrap reveal">
+		<a href="#" class="folio-cta">
+			<span>See the full portfolio</span>
+			<svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+				<path
+					d="M5 12h14M13 5l7 7-7 7"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+				/>
+			</svg>
+		</a>
+	</div>
+</section>
+
+<style>
+	.folio {
+		position: relative;
+		padding: clamp(72px, 9vw, 130px) 0 clamp(60px, 8vw, 110px);
+		background: var(--teal-ink);
+		color: var(--paper);
+		overflow: hidden;
+		isolation: isolate;
+	}
+	.folio-bg {
+		position: absolute;
+		inset: 0;
+		z-index: -1;
+		background-image: radial-gradient(
+			ellipse at 80% 20%,
+			rgba(252, 182, 38, 0.18) 0%,
+			transparent 50%
+		), radial-gradient(
+			ellipse at 20% 80%,
+			rgba(20, 124, 145, 0.4) 0%,
+			transparent 55%
+		);
+		pointer-events: none;
+	}
+
+	.folio-head {
+		display: flex;
+		flex-direction: column;
+		gap: 18px;
+		max-width: 760px;
+		margin-bottom: clamp(40px, 5vw, 64px);
+	}
+	.folio-head .eyebrow { color: var(--gold); }
+	.folio-head .eyebrow::before { background: var(--gold); }
+	.folio-title {
+		font-size: clamp(40px, 5.6vw, 84px);
+		margin: 0;
+		color: var(--paper);
+	}
+	.folio-title .ital { color: var(--orange); }
+	.folio-sub {
+		font-size: clamp(15px, 1.1vw, 18px);
+		color: rgba(250, 250, 246, 0.7);
+		margin: 0;
+		max-width: 520px;
+	}
+
+	.rails {
+		display: flex;
+		flex-direction: column;
+		gap: clamp(18px, 2vw, 28px);
+		mask-image: linear-gradient(
+			90deg,
+			transparent 0,
+			#000 8%,
+			#000 92%,
+			transparent 100%
+		);
+		-webkit-mask-image: linear-gradient(
+			90deg,
+			transparent 0,
+			#000 8%,
+			#000 92%,
+			transparent 100%
+		);
+	}
+
+	.rail {
+		width: 100%;
+		overflow: hidden;
+	}
+
+	.track {
+		display: flex;
+		gap: clamp(14px, 1.6vw, 22px);
+		width: max-content;
+		will-change: transform;
+	}
+	.rail-a .track {
+		animation: railA 70s linear infinite;
+	}
+	.rail-b .track {
+		animation: railB 60s linear infinite;
+	}
+	@keyframes railA {
+		from { transform: translate3d(0, 0, 0); }
+		to { transform: translate3d(-50%, 0, 0); }
+	}
+	@keyframes railB {
+		from { transform: translate3d(-50%, 0, 0); }
+		to { transform: translate3d(0, 0, 0); }
+	}
+
+	[data-folio]:hover .track {
+		animation-play-state: paused;
+	}
+
+	.tile {
+		position: relative;
+		flex: 0 0 auto;
+		width: clamp(260px, 32vw, 440px);
+		aspect-ratio: 16 / 10;
+		border-radius: 18px;
+		overflow: hidden;
+		background: rgba(255, 255, 255, 0.04);
+		box-shadow:
+			0 24px 50px -24px rgba(0, 0, 0, 0.55),
+			inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+		transform: translateZ(0);
+		transition: transform 0.5s cubic-bezier(0.22, 0.61, 0.36, 1),
+			box-shadow 0.5s ease;
+	}
+	.tile img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		display: block;
+		filter: saturate(0.95) brightness(0.92);
+		transition: filter 0.5s ease, transform 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
+	}
+	.tile-glow {
+		position: absolute;
+		inset: 0;
+		background: radial-gradient(
+			ellipse at 50% 100%,
+			rgba(247, 128, 64, 0.32) 0%,
+			transparent 60%
+		);
+		opacity: 0;
+		transition: opacity 0.45s ease;
+		pointer-events: none;
+		mix-blend-mode: screen;
+	}
+	.tile:hover {
+		transform: translateY(-6px) scale(1.02);
+		box-shadow:
+			0 32px 60px -20px rgba(0, 0, 0, 0.65),
+			inset 0 0 0 1px rgba(252, 182, 38, 0.35);
+	}
+	.tile:hover img {
+		filter: saturate(1.05) brightness(1.02);
+		transform: scale(1.04);
+	}
+	.tile:hover .tile-glow { opacity: 1; }
+
+	.folio-foot {
+		margin-top: clamp(36px, 5vw, 60px);
+		display: flex;
+		justify-content: center;
+	}
+	.folio-cta {
+		display: inline-flex;
+		align-items: center;
+		gap: 12px;
+		padding: 16px 28px;
+		border-radius: 999px;
+		background: transparent;
+		color: var(--paper);
+		border: 1.5px solid rgba(250, 250, 246, 0.28);
+		font-weight: 600;
+		font-size: 0.96rem;
+		transition: background 0.3s ease, border-color 0.3s ease, gap 0.3s ease,
+			color 0.3s ease;
+	}
+	.folio-cta:hover {
+		background: var(--orange);
+		border-color: var(--orange);
+		gap: 18px;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.rail-a .track, .rail-b .track { animation: none; }
+		.rails {
+			overflow-x: auto;
+			scroll-snap-type: x mandatory;
+		}
+		.tile { scroll-snap-align: start; }
+	}
+
+	@media (max-width: 640px) {
+		.tile { width: 78vw; }
+	}
+</style>
+
+<script>
+	// Pause the rail under the cursor row only (so hovering one rail doesn't freeze both).
+	const folio = document.querySelector<HTMLElement>("[data-folio]");
+	if (folio) {
+		const rails = Array.from(folio.querySelectorAll<HTMLElement>(".rail"));
+		rails.forEach((rail) => {
+			const track = rail.querySelector<HTMLElement>("[data-track]");
+			if (!track) return;
+			rail.addEventListener("mouseenter", () => {
+				track.style.animationPlayState = "paused";
+			});
+			rail.addEventListener("mouseleave", () => {
+				track.style.animationPlayState = "";
+			});
+		});
+	}
+</script>

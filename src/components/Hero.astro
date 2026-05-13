@@ -384,31 +384,8 @@ const mockups = [
 	const cursorDot = document.querySelector<HTMLElement>("[data-cursor]");
 
 	if (zone && trail && cursorDot && !isTouch) {
-		const init = async () => {
 		const templates = Array.from(trail.querySelectorAll<HTMLTemplateElement>("template"));
 		const variants = templates.map((t) => t.innerHTML.trim());
-
-		// Preload images and remove any that fail
-		const okVariants: string[] = [];
-		await Promise.all(
-			variants.map(
-				(html) =>
-					new Promise<void>((resolve) => {
-						const m = html.match(/src=\"([^\"]+)\"/);
-						if (!m) return resolve();
-						const img = new Image();
-						img.onload = () => {
-							okVariants.push(html);
-							resolve();
-						};
-						img.onerror = () => resolve();
-						img.src = m[1];
-					})
-			)
-		);
-		// Replace variants with only the working ones
-		variants.length = 0;
-		variants.push(...okVariants);
 
 		let lastX = 0;
 		let lastY = 0;
@@ -455,6 +432,15 @@ const mockups = [
 			card.style.top = `${localY}px`;
 			card.style.setProperty("--r", `${r}deg`);
 
+			const cardImg = card.querySelector<HTMLImageElement>("img");
+			if (cardImg) {
+				cardImg.addEventListener("error", () => {
+					card.remove();
+					const idx = variants.indexOf(html);
+					if (idx !== -1) variants.splice(idx, 1);
+				}, { once: true });
+			}
+
 			trail.appendChild(card);
 			// Two RAFs to ensure initial styles paint before transition
 			requestAnimationFrame(() =>
@@ -471,7 +457,5 @@ const mockups = [
 			b.addEventListener("mouseenter", () => cursorDot.classList.add("over-btn"));
 			b.addEventListener("mouseleave", () => cursorDot.classList.remove("over-btn"));
 		});
-		};
-		init();
 	}
 </script>
