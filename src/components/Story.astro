@@ -17,11 +17,8 @@ const closerWords = [
 ];
 ---
 
-<!-- Top boundary marker — makes the Services → Story transition visible
-     (both share teal-ink, so without this they read as one big empty area). -->
-<div class="story-head" aria-hidden="true">
-	<span class="story-head-line"></span>
-</div>
+<!-- Top spacer so the Services → Story transition has breathing room. -->
+<div class="story-head" aria-hidden="true"></div>
 
 <section class="story" data-story aria-label="Why the team matters">
 	<div class="story-pin">
@@ -400,24 +397,10 @@ const closerWords = [
 		opacity: 1;
 	}
 
-	/* Dark teal head + horizontal accent line marks the Services → Story
-	   boundary visually (both sections share teal-ink). */
+	/* Dark teal head spacer for breathing room at the Services → Story boundary. */
 	.story-head {
 		height: clamp(72px, 9vw, 120px);
 		background: var(--teal-ink);
-		display: flex;
-		align-items: center;
-		justify-content: center;
-	}
-	.story-head-line {
-		width: clamp(120px, 22vw, 320px);
-		height: 2px;
-		border-radius: 2px;
-		background: linear-gradient(90deg,
-			transparent 0%,
-			var(--orange) 50%,
-			transparent 100%);
-		box-shadow: 0 0 24px rgba(247, 128, 64, 0.5);
 	}
 
 	/* Dark teal tail below the story section so the closer headline has
