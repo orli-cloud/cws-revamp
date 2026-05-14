@@ -61,26 +61,28 @@
 			</a>
 		</div>
 
-		<div class="cta-meta">
-			<div class="meta-item">
-				<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
-					<path d="M5 12l5 5L20 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
-				</svg>
-				No-pressure call
-			</div>
-			<div class="meta-item">
-				<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
-					<path d="M5 12l5 5L20 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
-				</svg>
-				Quote in 48 hours
-			</div>
-			<div class="meta-item">
-				<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
-					<path d="M5 12l5 5L20 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
-				</svg>
-				No drama, no excuses
-			</div>
-		</div>
+		<p class="cta-pssst">
+			<svg class="pssst-arrow" viewBox="0 0 60 36" aria-hidden="true">
+				<path
+					d="M5 30 C 18 28, 28 18, 38 8"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="1.6"
+					stroke-linecap="round"
+				/>
+				<path
+					d="M38 8 L 32 10 M38 8 L 36 14"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="1.6"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+				/>
+			</svg>
+			<span>
+				<em>Pssst!</em> We have a 68% return rate and 97% of our new clients are referrals. Coincidence? You can be the judge.
+			</span>
+		</p>
 	</div>
 </section>
 
@@ -355,22 +357,30 @@
 		gap: 14px;
 	}
 
-	.cta-meta {
+	.cta-pssst {
 		display: flex;
-		gap: 28px;
-		flex-wrap: wrap;
-		justify-content: center;
-		margin-top: 26px;
-	}
-	.meta-item {
-		display: inline-flex;
 		align-items: center;
 		gap: 8px;
+		width: fit-content;
+		max-width: 540px;
+		margin: 26px auto 0;
 		font-size: 0.84rem;
-		color: rgba(255, 255, 255, 0.65);
-		font-weight: 500;
+		line-height: 1.35;
+		color: rgba(255, 255, 255, 0.7);
+		text-align: left;
 	}
-	.meta-item svg { color: var(--gold); }
+	.cta-pssst em {
+		font-style: normal;
+		font-weight: 700;
+		color: var(--orange);
+	}
+	.cta-pssst .pssst-arrow {
+		flex-shrink: 0;
+		width: 42px;
+		height: 26px;
+		color: var(--orange);
+		transform: translateY(-2px);
+	}
 </style>
 
 <script>

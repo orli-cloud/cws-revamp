@@ -42,11 +42,11 @@ const reviews = [
 	<div class="wrap reviews-grid">
 		<aside class="reviews-aside reveal">
 			<h2 class="display reviews-title">
-				What clients<br />
-				<span class="ital">actually say.</span>
+				Service like that<br />
+				<span class="ital">gets reviews like these.</span>
 			</h2>
 			<p class="reviews-sub">
-				Real reviews from real founders. We've collected hundreds — here's a few.
+				<strong>TLDR;</strong> Our clients love the product <em>and</em> the process.
 			</p>
 
 			<div class="rating-card">
@@ -148,6 +148,16 @@ const reviews = [
 		color: var(--ink-mute);
 		margin: 0;
 		max-width: 380px;
+	}
+	.reviews-sub strong {
+		font-weight: 700;
+		color: var(--teal-ink);
+		letter-spacing: 0.04em;
+	}
+	.reviews-sub em {
+		font-style: italic;
+		color: var(--orange);
+		font-weight: 600;
 	}
 
 	.rating-card {

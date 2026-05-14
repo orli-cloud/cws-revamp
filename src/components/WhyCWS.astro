@@ -104,6 +104,10 @@ const pillars = [
 		padding: clamp(80px, 10vw, 140px) 0 clamp(60px, 8vw, 120px);
 		background: var(--paper);
 		position: relative;
+		cursor: none;
+	}
+	@media (hover: none) {
+		.why { cursor: auto; }
 	}
 	.why::before {
 		content: "";
@@ -349,7 +353,7 @@ const pillars = [
 	const isTouch = window.matchMedia("(hover: none)").matches;
 
 	if (zone && cursor && !reduce && !isTouch) {
-		// Cursor only shows when hovering over the actual cards, not the section background
+		// Cursor follows the mouse across the whole Why section, not just the cards.
 		let raf = 0;
 		let tx = -200, ty = -200, mx = -200, my = -200;
 		const tick = () => {
@@ -367,18 +371,53 @@ const pillars = [
 			my = e.clientY;
 			if (!raf) raf = requestAnimationFrame(tick);
 		};
-		document.querySelectorAll<HTMLElement>(".card-wrap").forEach((card) => {
-			card.addEventListener("mouseenter", (e) => {
-				const ev = e as MouseEvent;
-				mx = ev.clientX; my = ev.clientY;
-				tx = mx; ty = my;
-				cursor.style.transform = `translate3d(${tx}px, ${ty}px, 0)`;
-				cursor.classList.add("is-on");
-			});
-			card.addEventListener("mouseleave", () => {
-				cursor.classList.remove("is-on");
-			});
-			card.addEventListener("mousemove", onMove);
+		zone.addEventListener("mouseenter", (e) => {
+			const ev = e as MouseEvent;
+			mx = ev.clientX; my = ev.clientY;
+			tx = mx; ty = my;
+			cursor.style.transform = `translate3d(${tx}px, ${ty}px, 0)`;
+			cursor.classList.add("is-on");
 		});
+		zone.addEventListener("mouseleave", () => {
+			cursor.classList.remove("is-on");
+		});
+		zone.addEventListener("mousemove", onMove);
+	}
+
+	// Leader-line continuation: grows down as the section enters the viewport,
+	// then unhides the header once it's mostly drawn.
+	const whySection = document.querySelector<HTMLElement>(".why");
+	const leaderWrap = whySection?.querySelector<HTMLElement>("[data-why-leader]");
+	const leaderFill = whySection?.querySelector<HTMLElement>("[data-why-leader-fill]");
+
+	if (whySection && leaderWrap && leaderFill) {
+		// Mark "leader mode" so CSS hides the header until JS reveals it.
+		// Without JS, the class is never added and the header is visible by default.
+		whySection.classList.add("leader-mode");
+
+		if (reduce) {
+			leaderFill.style.height = `${leaderWrap.clientHeight}px`;
+			whySection.classList.add("leader-drawn");
+		} else {
+			let raf = 0;
+			const update = () => {
+				raf = 0;
+				const rect = whySection.getBoundingClientRect();
+				const vh = window.innerHeight;
+				// Begin drawing as the section top crosses ~85% of viewport,
+				// complete when it reaches ~30% (i.e., scroll continues into section).
+				const startY = vh * 0.85;
+				const endY = vh * 0.30;
+				const raw = (startY - rect.top) / (startY - endY);
+				const progress = Math.max(0, Math.min(1, raw));
+				const maxH = leaderWrap.clientHeight;
+				leaderFill.style.height = `${progress * maxH}px`;
+				whySection.classList.toggle("leader-drawn", progress >= 0.6);
+			};
+			const onScroll = () => { if (!raf) raf = requestAnimationFrame(update); };
+			window.addEventListener("scroll", onScroll, { passive: true });
+			window.addEventListener("resize", onScroll, { passive: true });
+			update();
+		}
 	}
 </script>

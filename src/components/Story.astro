@@ -1,0 +1,688 @@
+---
+// Scrollytelling manifesto: pinned section with scenes that fade in/out
+// as the user scrolls. Mobile gracefully degrades to a vertical reveal flow.
+
+// Closer headline split into words → each word wraps as an inline-block
+// so it stays intact, but the headline still wraps at word boundaries.
+// Each word's letters reveal one-at-a-time on scroll. "team" is the emph word.
+const closerWords = [
+	{ text: "The", emph: false },
+	{ text: "difference", emph: false },
+	{ text: "is", emph: false },
+	{ text: "the", emph: false },
+	{ text: "team", emph: true },
+	{ text: "you're", emph: false },
+	{ text: "working", emph: false },
+	{ text: "with.", emph: false },
+];
+---
+
+<!-- Top boundary marker — makes the Services → Story transition visible
+     (both share teal-ink, so without this they read as one big empty area). -->
+<div class="story-head" aria-hidden="true">
+	<span class="story-head-line"></span>
+</div>
+
+<section class="story" data-story aria-label="Why the team matters">
+	<div class="story-pin">
+		<div class="story-inner">
+			<!-- Scene 1 — setup -->
+			<div class="scene" data-scene="0">
+				<h2 class="scene-h">
+					You're probably looking at a few agencies right now.
+				</h2>
+				<p class="scene-aside">
+					<span class="aside-mark" aria-hidden="true"></span>
+					<em>Smart move.</em> We like a discerning client.
+				</p>
+			</div>
+
+			<!-- Scene 2 — the cliché -->
+			<div class="scene" data-scene="1">
+				<p class="scene-lede">Most of what you're reading is about—</p>
+				<ul class="cliche">
+					<li><span>"conversions."</span></li>
+					<li><span>"elevating your brand."</span></li>
+					<li><span>"standing out in a crowded market."</span></li>
+				</ul>
+				<p class="scene-aside muted gated">That's important. <span class="ellipsis">…</span></p>
+			</div>
+
+			<!-- Scene 3 — the shadow -->
+			<div class="scene shadow" data-scene="2">
+				<p class="scene-lede">But building a website can be—</p>
+				<h2 class="scene-h big">
+					<span class="word w-bad">full of surprises.</span>
+					<span class="word w-bad">confusing.</span>
+					<span class="word w-bad">stressful.</span>
+				</h2>
+				<p class="scene-aside muted gated">Forced into something you don't even like.</p>
+			</div>
+
+			<!-- Scene 4 — the light -->
+			<div class="scene light" data-scene="3">
+				<p class="scene-lede">Or it can be—</p>
+				<h2 class="scene-h big">
+					<span class="word w-good">smooth.</span>
+					<span class="word w-good">clear.</span>
+					<span class="word w-good">even&nbsp;exciting.</span>
+				</h2>
+				<p class="scene-aside gated">
+					<em>(Yeah —</em> you <strong>are</strong> making your dream website.<em>)</em>
+				</p>
+			</div>
+
+			<!-- Scene 5 — the point -->
+			<div class="scene closer" data-scene="4">
+				<h2 class="scene-h xl letters" data-letters>
+					{closerWords.flatMap((word, i) => {
+						const w = (
+							<span class={`word-w${word.emph ? " ital" : ""}`}>
+								{Array.from(word.text).map((ch) => (
+									<span class="char">{ch}</span>
+								))}
+							</span>
+						);
+						return i > 0 ? [" ", w] : [w];
+					})}
+				</h2>
+			</div>
+
+			<!-- Single continuous line that bridges scene 4 → scene 5.
+			     Anchored in story-inner so it doesn't slide when scene 4
+			     scrolls up, and so it isn't tied to either scene's opacity. -->
+			<span class="story-line" data-story-line aria-hidden="true"></span>
+		</div>
+	</div>
+</section>
+
+<!-- Bottom-pad strip: extends the dark teal background after the story
+     pin releases, giving the closer headline visible breathing room
+     before the next (paper-background) section appears. -->
+<div class="story-tail" aria-hidden="true"></div>
+
+<style>
+	.story {
+		/* Scroll is distributed across scenes by JS (weighted). Cliché scene
+		   gets more room so its 3 lines can stagger in on scroll. */
+		position: relative;
+		background: var(--teal-ink);
+		color: var(--paper);
+		/* This height is overridden on small screens (no pin) */
+		height: 720vh;
+		isolation: isolate;
+	}
+
+	.story::before {
+		content: "";
+		position: absolute;
+		inset: 0;
+		background:
+			radial-gradient(
+				ellipse 60% 50% at 18% 22%,
+				rgba(20, 124, 145, 0.45) 0%,
+				transparent 60%
+			),
+			radial-gradient(
+				ellipse 55% 45% at 85% 78%,
+				rgba(252, 182, 38, 0.16) 0%,
+				transparent 65%
+			),
+			radial-gradient(
+				ellipse 70% 60% at 50% 50%,
+				rgba(247, 128, 64, 0.08) 0%,
+				transparent 70%
+			);
+		pointer-events: none;
+		z-index: 0;
+	}
+
+	.story::after {
+		content: "";
+		position: absolute;
+		inset: 0;
+		background-image: radial-gradient(
+			circle at 1px 1px,
+			rgba(255, 255, 255, 0.06) 1px,
+			transparent 0
+		);
+		background-size: 32px 32px;
+		mask-image: linear-gradient(180deg, transparent 0%, #000 22%, #000 78%, transparent 100%);
+		-webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 22%, #000 78%, transparent 100%);
+		pointer-events: none;
+		z-index: 0;
+	}
+
+	.story-pin {
+		position: sticky;
+		top: 0;
+		height: 100vh;
+		display: grid;
+		place-items: center;
+		overflow: hidden;
+		z-index: 1;
+	}
+
+	.story-inner {
+		position: relative;
+		width: 100%;
+		max-width: var(--max-w);
+		padding-inline: var(--gutter);
+		text-align: center;
+		min-height: 100vh;
+		display: grid;
+		place-items: center;
+	}
+
+	/* Scenes stack on top of each other in the pinned viewport */
+	.scene {
+		position: absolute;
+		inset: 0;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		gap: clamp(14px, 1.6vw, 22px);
+		padding: clamp(40px, 8vh, 80px) clamp(20px, 5vw, 60px);
+		opacity: 0;
+		transform: translateY(36px) scale(0.985);
+		filter: blur(8px);
+		transition:
+			opacity 700ms cubic-bezier(0.22, 0.61, 0.36, 1),
+			transform 700ms cubic-bezier(0.22, 0.61, 0.36, 1),
+			filter 700ms cubic-bezier(0.22, 0.61, 0.36, 1);
+		will-change: opacity, transform, filter;
+		pointer-events: none;
+	}
+	.scene.is-active {
+		opacity: 1;
+		transform: none;
+		filter: blur(0);
+		pointer-events: auto;
+	}
+	.scene.is-past {
+		opacity: 0;
+		transform: translateY(-36px) scale(0.985);
+		filter: blur(8px);
+	}
+
+	.kicker {
+		font-family: var(--font-sans);
+		font-weight: 600;
+		font-size: 0.74rem;
+		letter-spacing: 0.22em;
+		text-transform: uppercase;
+		color: var(--gold);
+		margin: 0;
+		display: inline-flex;
+		align-items: center;
+		gap: 12px;
+		opacity: 0.85;
+	}
+	.kicker::before,
+	.kicker::after {
+		content: "";
+		width: 28px;
+		height: 1px;
+		background: currentColor;
+		opacity: 0.5;
+	}
+
+	.scene-lede {
+		font-family: var(--font-sans);
+		font-weight: 500;
+		font-size: clamp(16px, 1.4vw, 22px);
+		color: rgba(250, 250, 246, 0.55);
+		margin: 0;
+		letter-spacing: 0.01em;
+	}
+
+	.scene-h {
+		font-family: var(--font-sans);
+		font-weight: 700;
+		letter-spacing: -0.028em;
+		line-height: 1.02;
+		color: var(--paper);
+		font-size: clamp(36px, 5.4vw, 78px);
+		margin: 0;
+		max-width: 18ch;
+	}
+	.scene-h.big {
+		font-size: clamp(40px, 6vw, 92px);
+		display: flex;
+		flex-direction: column;
+		gap: clamp(6px, 0.8vw, 14px);
+	}
+	.scene-h.xl {
+		font-size: clamp(44px, 6.8vw, 104px);
+		max-width: 16ch;
+	}
+	.scene-h .ital {
+		font-style: italic;
+		color: var(--orange);
+	}
+
+	/* Word reveal — controlled by JS via .is-shown so each line ties to scroll */
+	.word {
+		display: inline-block;
+		opacity: 0;
+		transform: translateY(22px);
+		transition:
+			opacity 550ms cubic-bezier(0.22, 0.61, 0.36, 1),
+			transform 550ms cubic-bezier(0.22, 0.61, 0.36, 1);
+	}
+	.word.is-shown {
+		opacity: 1;
+		transform: none;
+	}
+
+	/* "Bad" triplet — orange family (brand) */
+	.w-bad:nth-of-type(1) { color: var(--orange); }
+	.w-bad:nth-of-type(2) { color: var(--orange-deep); }
+	.w-bad:nth-of-type(3) { color: var(--orange); }
+
+	/* "Good" triplet — paper, gold, orange (brand only, no light blue) */
+	.w-good:nth-of-type(1) { color: var(--paper); }
+	.w-good:nth-of-type(2) { color: var(--gold); }
+	.w-good:nth-of-type(3) { color: var(--orange); }
+
+	/* Cliché list */
+	.cliche {
+		list-style: none;
+		padding: 0;
+		margin: 4px 0 0;
+		display: flex;
+		flex-direction: column;
+		gap: clamp(4px, 0.6vw, 10px);
+	}
+	.cliche li {
+		font-family: var(--font-sans);
+		font-weight: 700;
+		letter-spacing: -0.024em;
+		line-height: 1.04;
+		font-size: clamp(30px, 4.6vw, 64px);
+		opacity: 0;
+		transform: translateY(20px);
+		transition:
+			opacity 550ms cubic-bezier(0.22, 0.61, 0.36, 1),
+			transform 550ms cubic-bezier(0.22, 0.61, 0.36, 1);
+	}
+	/* Muted brand tones — these are tired clichés, not the hero copy */
+	.cliche li:nth-child(1) { color: rgba(252, 182, 38, 0.78); }   /* gold */
+	.cliche li:nth-child(2) { color: rgba(250, 250, 246, 0.66); }  /* paper */
+	.cliche li:nth-child(3) { color: rgba(247, 128, 64, 0.78); }   /* orange */
+	.cliche li span {
+		position: relative;
+	}
+	.cliche li.is-shown {
+		opacity: 1;
+		transform: none;
+	}
+
+	.scene-aside {
+		font-family: var(--font-sans);
+		font-weight: 500;
+		font-size: clamp(15px, 1.2vw, 19px);
+		color: rgba(250, 250, 246, 0.7);
+		margin: 0;
+		max-width: 44ch;
+		line-height: 1.5;
+		display: inline-flex;
+		align-items: center;
+		gap: 10px;
+	}
+	.scene-aside.muted {
+		color: rgba(250, 250, 246, 0.45);
+		font-style: italic;
+	}
+	/* Gated asides: hidden until JS reveals them after the trio above completes */
+	.scene-aside.gated {
+		opacity: 0;
+		transform: translateY(12px);
+		transition:
+			opacity 600ms cubic-bezier(0.22, 0.61, 0.36, 1),
+			transform 600ms cubic-bezier(0.22, 0.61, 0.36, 1);
+	}
+	.scene-aside.gated.is-shown {
+		opacity: 1;
+		transform: none;
+	}
+	.scene-aside em {
+		font-style: italic;
+		color: var(--gold);
+		font-weight: 600;
+	}
+	.scene-aside strong {
+		color: var(--paper);
+		font-weight: 700;
+	}
+	.aside-mark {
+		display: inline-block;
+		width: 6px;
+		height: 6px;
+		border-radius: 50%;
+		background: var(--orange);
+		box-shadow: 0 0 0 4px rgba(247, 128, 64, 0.18);
+	}
+	.ellipsis {
+		color: rgba(250, 250, 246, 0.35);
+		letter-spacing: 0.2em;
+	}
+
+	/* Closer scene: generous breathing room above and below the headline.
+	   Line ends ~42vh, headline starts at 50vh (8vh gap), and there's
+	   ~22vh of empty space below the headline before the section ends. */
+	.scene.closer {
+		gap: clamp(14px, 2.4vh, 28px);
+		justify-content: flex-start;
+		padding-top: 50vh;
+		padding-bottom: 22vh;
+	}
+	.letters {
+		max-width: 18ch;
+	}
+	/* Each word stays intact (inline-block); spaces between words are real
+	   text nodes, so the headline wraps at word boundaries. */
+	.word-w {
+		display: inline-block;
+		white-space: nowrap;
+	}
+	.word-w.ital {
+		font-style: italic;
+		color: var(--orange);
+	}
+	.char {
+		display: inline-block;
+		opacity: 0;
+		transition: opacity 220ms ease;
+	}
+	.char.is-shown {
+		opacity: 1;
+	}
+
+	/* Dark teal head + horizontal accent line marks the Services → Story
+	   boundary visually (both sections share teal-ink). */
+	.story-head {
+		height: clamp(72px, 9vw, 120px);
+		background: var(--teal-ink);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+	.story-head-line {
+		width: clamp(120px, 22vw, 320px);
+		height: 2px;
+		border-radius: 2px;
+		background: linear-gradient(90deg,
+			transparent 0%,
+			var(--orange) 50%,
+			transparent 100%);
+		box-shadow: 0 0 24px rgba(247, 128, 64, 0.5);
+	}
+
+	/* Dark teal tail below the story section so the closer headline has
+	   breathing room before the next (paper) section starts. Height
+	   mirrors the next section's padding-top for visual symmetry. */
+	.story-tail {
+		height: clamp(80px, 10vw, 140px);
+		background: var(--teal-ink);
+	}
+
+	/* Single continuous line spanning scene 4 → scene 5. Anchored at the
+	   story-inner level so its TOP never moves and it never disappears.
+	   Top is in the upper-middle of the viewport so the closer headline
+	   can be positioned right below where the line ends. */
+	.story-line {
+		position: absolute;
+		top: 22vh;
+		left: 50%;
+		transform: translateX(-50%);
+		width: 2px;
+		height: 0;
+		background: var(--orange);
+		border-radius: 2px;
+		box-shadow: 0 0 16px rgba(247, 128, 64, 0.42);
+		transform-origin: top center;
+		z-index: 5;
+		/* JS pushes height per-frame tied to scroll; a tiny smoothing
+		   transition softens sub-pixel jitter without lagging. */
+		transition: height 60ms linear;
+		pointer-events: none;
+	}
+	/* While JS is scroll-driving scene 4 upward, disable transitions
+	   so the position tracks the scrollbar instead of lagging. */
+	.scene.light.is-scrolling-up {
+		opacity: 1;
+		filter: blur(0);
+		transition: none;
+		pointer-events: none;
+	}
+
+	/* Mobile fallback — no pinning, scenes flow vertically */
+	@media (max-width: 720px) {
+		.story {
+			height: auto;
+			padding: clamp(80px, 14vw, 140px) 0;
+		}
+		.story-pin {
+			position: relative;
+			height: auto;
+			display: block;
+		}
+		.story-inner {
+			min-height: 0;
+			display: block;
+			text-align: left;
+		}
+		.scene {
+			position: relative;
+			inset: auto;
+			min-height: 0;
+			padding: 0 0 clamp(56px, 12vw, 96px);
+			align-items: flex-start;
+			justify-content: flex-start;
+			gap: 14px;
+			opacity: 0;
+			transform: translateY(28px);
+			filter: none;
+		}
+		.scene.in-view {
+			opacity: 1;
+			transform: none;
+		}
+		.scene-h, .scene-h.big, .scene-h.xl {
+			text-align: left;
+			max-width: none;
+		}
+		.scene-h.big { flex-direction: column; gap: 6px; }
+		.word, .word.is-shown { opacity: 1; transform: none; }
+		.cliche li, .cliche li.is-shown { opacity: 1; transform: none; }
+		.char, .char.is-shown { opacity: 1; }
+		.story-line { display: none; }
+		.scene-aside.gated, .scene-aside.gated.is-shown { opacity: 1; transform: none; }
+		.kicker::after { display: none; }
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.scene,
+		.scene.is-past,
+		.word,
+		.cliche li,
+		.char,
+		.story-line,
+		.scene-aside.gated {
+			transition: none;
+		}
+		.char { opacity: 1; }
+		.story-line { display: none; }
+		.scene-aside.gated { opacity: 1; transform: none; }
+		.scene {
+			opacity: 1;
+			transform: none;
+			filter: none;
+			position: relative;
+			inset: auto;
+			padding: 0 0 80px;
+		}
+		.story {
+			height: auto;
+		}
+		.story-pin {
+			position: relative;
+			height: auto;
+			display: block;
+		}
+		.story-inner { min-height: 0; display: block; }
+	}
+</style>
+
+<script>
+	const section = document.querySelector<HTMLElement>("[data-story]");
+	const scenes = section
+		? Array.from(section.querySelectorAll<HTMLElement>(".scene"))
+		: [];
+	const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+	const isSmall = window.matchMedia("(max-width: 720px)").matches;
+
+	if (section && scenes.length && !reduce && !isSmall) {
+		// Weighted slots — scenes with 3 staggered items get more scroll room
+		// so each item ties to a portion of the user's scroll, not all at once.
+		// Closer scene gets extra room for its letter reveal + line draw.
+		// Order: [setup, cliché, shadow, light, closer]
+		const weights = [1, 2.2, 2.2, 2.2, 3];
+		const totalWeight = weights.reduce((a, b) => a + b, 0);
+		const ranges: [number, number][] = [];
+		{
+			let cum = 0;
+			for (const w of weights) {
+				const start = cum / totalWeight;
+				cum += w;
+				ranges.push([start, cum / totalWeight]);
+			}
+		}
+
+		// Per-scene sub-reveal definitions (which scenes have staggered items)
+		type SubReveal = { sceneIdx: number; selector: string; thresholds: number[] };
+		const subReveals: SubReveal[] = [
+			// All reveals happen in the FIRST HALF of each scene's scroll so
+			// the user has the second half to actually read what just appeared
+			// before the next scene takes over.
+			{ sceneIdx: 1, selector: ".cliche li",      thresholds: [0.08, 0.22, 0.36] },
+			{ sceneIdx: 2, selector: ".word",           thresholds: [0.08, 0.22, 0.36] },
+			{ sceneIdx: 3, selector: ".word",           thresholds: [0.08, 0.22, 0.36] },
+			// Closing aside in each multi-line scene appears after the trio resolves
+			{ sceneIdx: 1, selector: ".scene-aside.gated", thresholds: [0.50] },
+			{ sceneIdx: 2, selector: ".scene-aside.gated", thresholds: [0.50] },
+			{ sceneIdx: 3, selector: ".scene-aside.gated", thresholds: [0.50] },
+		];
+
+		let raf = 0;
+
+		const update = () => {
+			raf = 0;
+			const rect = section.getBoundingClientRect();
+			const scrollable = section.offsetHeight - window.innerHeight;
+			if (scrollable <= 0) return;
+			const traveled = Math.max(0, Math.min(scrollable, -rect.top));
+			const progress = traveled / scrollable;
+
+			// Find active scene by range
+			let activeIndex = ranges.length - 1;
+			for (let i = 0; i < ranges.length; i++) {
+				if (progress < ranges[i][1]) { activeIndex = i; break; }
+			}
+
+			scenes.forEach((scene, i) => {
+				scene.classList.toggle("is-active", i === activeIndex);
+				scene.classList.toggle("is-past", i < activeIndex);
+			});
+
+			// Sub-reveals: each item shows when local progress passes its threshold.
+			// Naturally handles scroll-up (items hide again as progress falls).
+			for (const sr of subReveals) {
+				const scene = scenes[sr.sceneIdx];
+				if (!scene) continue;
+				const [s, e] = ranges[sr.sceneIdx];
+				const local = (progress - s) / (e - s);
+				const items = scene.querySelectorAll<HTMLElement>(sr.selector);
+				items.forEach((item, idx) => {
+					const threshold = sr.thresholds[idx] ?? 0;
+					item.classList.toggle("is-shown", local >= threshold);
+				});
+			}
+
+			// Scene 4 (light): scroll-drives upward 1:1 with scrollbar so it
+			// behaves like a real page scroll out of the way.
+			const lightScene = scenes[3];
+			if (lightScene) {
+				const [cs, ce] = ranges[4];
+				if (progress >= cs) {
+					const closerLocal = Math.max(0, Math.min(1, (progress - cs) / (ce - cs)));
+					const scene5RangePx = (ce - cs) * scrollable;
+					const slidePx = closerLocal * scene5RangePx;
+					lightScene.classList.add("is-scrolling-up");
+					lightScene.style.transform = `translateY(${-slidePx}px)`;
+				} else {
+					lightScene.classList.remove("is-scrolling-up");
+					lightScene.style.transform = "";
+				}
+			}
+
+			// Single continuous line that bridges scene 4 → scene 5.
+			// Starts at scene 4's late local (after aside has settled) and
+			// continues growing through scene 5 until letters are about to
+			// reveal. Never disappears or reappears — one persistent element.
+			const storyLine = section.querySelector<HTMLElement>("[data-story-line]");
+			if (storyLine) {
+				const [ls, le] = ranges[3];
+				const [cs, ce] = ranges[4];
+				// Convert "scene 4 local 0.78" and "closer local 0.80" to
+				// total story-progress values so we get one smooth range.
+				const drawStart = ls + 0.78 * (le - ls);
+				const drawEnd = cs + 0.80 * (ce - cs);
+				const dp = Math.max(0, Math.min(1, (progress - drawStart) / (drawEnd - drawStart)));
+				// Max height = 20vh, so the line bottom lands at 22vh + 20vh =
+				// 42vh, with 8vh of breathing room before the headline at 50vh.
+				const maxH = Math.min(180, Math.round(window.innerHeight * 0.20));
+				storyLine.style.height = `${dp * maxH}px`;
+			}
+
+			// Closer letters: reveal only after the single line is fully
+			// extended (well after scene 4 is off-screen and line is at max).
+			const closerScene = scenes[4];
+			if (closerScene) {
+				const [cs, ce] = ranges[4];
+				const local = Math.max(0, Math.min(1, (progress - cs) / (ce - cs)));
+				const chars = closerScene.querySelectorAll<HTMLElement>(".char");
+				const startT = 0.82, endT = 0.99;
+				const span = endT - startT;
+				const total = Math.max(1, chars.length - 1);
+				chars.forEach((el, idx) => {
+					const t = startT + (idx / total) * span;
+					el.classList.toggle("is-shown", local >= t);
+				});
+			}
+		};
+
+		const onScroll = () => {
+			if (!raf) raf = requestAnimationFrame(update);
+		};
+		window.addEventListener("scroll", onScroll, { passive: true });
+		window.addEventListener("resize", onScroll, { passive: true });
+		update();
+	} else if (section && scenes.length) {
+		// Mobile / reduced motion — reveal each scene as it enters viewport.
+		const io = new IntersectionObserver(
+			(entries) => {
+				for (const e of entries) {
+					if (e.isIntersecting) {
+						e.target.classList.add("in-view");
+						io.unobserve(e.target);
+					}
+				}
+			},
+			{ threshold: 0.18, rootMargin: "0px 0px -60px 0px" }
+		);
+		scenes.forEach((s) => io.observe(s));
+	}
+</script>
