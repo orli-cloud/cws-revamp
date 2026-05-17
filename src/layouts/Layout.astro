@@ -230,6 +230,35 @@ const {
 		}
 	}
 
+	/* Reveal footer: the page content scrolls up over a pinned footer.
+	   .page-shell is the opaque sheet; .site-footer sits behind it,
+	   fixed to the viewport; .footer-spacer is the scroll distance
+	   over which the footer is uncovered. */
+	.page-shell {
+		position: relative;
+		z-index: 1;
+		background: var(--paper);
+		box-shadow: 0 30px 60px -14px rgba(8, 43, 54, 0.45);
+	}
+	.site-footer {
+		position: fixed;
+		inset: 0;
+		z-index: 0;
+	}
+	.footer-spacer {
+		height: 100vh;
+	}
+	@supports (height: 100dvh) {
+		.footer-spacer {
+			height: 100dvh;
+		}
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.page-shell {
+			box-shadow: 0 -1px 0 var(--hairline-strong);
+		}
+	}
+
 	/* Shared container */
 	.wrap {
 		width: 100%;

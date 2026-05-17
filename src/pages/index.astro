@@ -14,17 +14,20 @@ import WhatsappFloat from "../components/WhatsappFloat.astro";
 ---
 
 <Layout>
-	<Nav />
-	<main>
-		<Hero />
-		<SnippetBar />
-		<Services />
-		<Story />
-		<WhyCWS />
-		<Portfolio />
-		<Reviews />
-		<CTA />
-	</main>
+	<div class="page-shell">
+		<Nav />
+		<main>
+			<Hero />
+			<SnippetBar />
+			<Services />
+			<Story />
+			<WhyCWS />
+			<Portfolio />
+			<Reviews />
+			<CTA />
+		</main>
+	</div>
+	<div class="footer-spacer" aria-hidden="true"></div>
 	<Footer />
 	<WhatsappFloat />
 </Layout>
