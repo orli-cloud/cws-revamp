@@ -34,7 +34,7 @@ const pillars = [
 ];
 ---
 
-<section id="why" class="why" data-flip-zone>
+<section id="why" class="why">
 	<div class="wrap">
 		<header class="why-head reveal">
 			<h2 class="display why-title">
@@ -46,7 +46,7 @@ const pillars = [
 			</p>
 		</header>
 
-		<ul class="cards">
+		<ul class="cards" data-flip-zone>
 			{
 				pillars.map((p, i) => (
 					<li class="card-wrap reveal" style={`transition-delay: ${i * 80}ms`}>
@@ -95,7 +95,7 @@ const pillars = [
 	</div>
 
 	<div class="why-cursor" data-flip-cursor aria-hidden="true">
-		<span class="why-circle-label">Proof</span>
+		<span class="why-circle-label">Tap a card to prove it</span>
 	</div>
 </section>
 
@@ -104,10 +104,6 @@ const pillars = [
 		padding: clamp(80px, 10vw, 140px) 0 clamp(60px, 8vw, 120px);
 		background: var(--paper);
 		position: relative;
-		cursor: none;
-	}
-	@media (hover: none) {
-		.why { cursor: auto; }
 	}
 	.why::before {
 		content: "";
@@ -168,12 +164,16 @@ const pillars = [
 		margin: 0;
 		position: relative;
 		z-index: 1;
+		cursor: none;
 	}
 	@media (max-width: 980px) {
 		.cards { grid-template-columns: repeat(2, 1fr); }
 	}
 	@media (max-width: 540px) {
 		.cards { grid-template-columns: 1fr; }
+	}
+	@media (hover: none) {
+		.cards { cursor: auto; }
 	}
 
 	.card-wrap {
@@ -307,21 +307,20 @@ const pillars = [
 		position: fixed;
 		top: 0;
 		left: 0;
-		width: 112px;
-		height: 112px;
-		margin: -56px 0 0 -56px;
-		border-radius: 50%;
+		padding: 14px 22px;
+		border-radius: 999px;
 		background: radial-gradient(circle at 30% 25%, #ffa46a 0%, var(--orange) 55%, var(--orange-deep) 100%);
 		color: #fff;
-		display: flex;
-		flex-direction: column;
+		display: inline-flex;
 		align-items: center;
 		justify-content: center;
-		gap: 4px;
+		gap: 6px;
 		pointer-events: none;
 		opacity: 0;
 		z-index: 200;
-		transform: translate3d(-300px, -300px, 0);
+		/* JS appends translate3d(x,y,0) before this; translate(-50%,-50%)
+		   keeps the bubble centered on the pointer at any size. */
+		transform: translate3d(-300px, -300px, 0) translate(-50%, -50%);
 		scale: 0.7;
 		transition: opacity 0.25s ease, scale 0.3s cubic-bezier(0.22, 0.61, 0.36, 1);
 		font-family: var(--font-sans);
@@ -330,6 +329,7 @@ const pillars = [
 		line-height: 1.1;
 		text-align: center;
 		letter-spacing: -0.005em;
+		white-space: nowrap;
 		box-shadow:
 			0 18px 40px -12px rgba(247, 128, 64, 0.55),
 			inset 0 0 0 1px rgba(255, 255, 255, 0.18);
@@ -359,7 +359,7 @@ const pillars = [
 		const tick = () => {
 			tx += (mx - tx) * 0.28;
 			ty += (my - ty) * 0.28;
-			cursor.style.transform = `translate3d(${tx}px, ${ty}px, 0)`;
+			cursor.style.transform = `translate3d(${tx}px, ${ty}px, 0) translate(-50%, -50%)`;
 			if (Math.abs(mx - tx) > 0.3 || Math.abs(my - ty) > 0.3) {
 				raf = requestAnimationFrame(tick);
 			} else {
@@ -375,7 +375,7 @@ const pillars = [
 			const ev = e as MouseEvent;
 			mx = ev.clientX; my = ev.clientY;
 			tx = mx; ty = my;
-			cursor.style.transform = `translate3d(${tx}px, ${ty}px, 0)`;
+			cursor.style.transform = `translate3d(${tx}px, ${ty}px, 0) translate(-50%, -50%)`;
 			cursor.classList.add("is-on");
 		});
 		zone.addEventListener("mouseleave", () => {

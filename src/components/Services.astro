@@ -3,7 +3,7 @@ const services = [
 	{
 		key: "websites",
 		title: "Websites",
-		blurb: "Express or Custom. Copy, design, and development handled in-house.",
+		blurb: "From strategy to launch — copy, design, and development all handled by our in-house team. Express to custom packages available.",
 		cta: "See websites we've done",
 		bg: "https://cms-cdn.cwsio.com/wp-content/uploads/2025/04/Sunray-ABA-1-Thumbnail.jpg",
 		accent: "var(--teal)",
@@ -17,23 +17,9 @@ const services = [
 		],
 	},
 	{
-		key: "seo",
-		title: "SEO",
-		blurb: "Strategy, content, and technical work that keeps compounding.",
-		cta: "See SEO case studies",
-		bg: "https://cms-cdn.cwsio.com/wp-content/uploads/2025/01/Bright-Bridge-ABA-1-Thumbnail.jpg",
-		accent: "var(--gold)",
-		samples: [
-			{ name: "Bright Bridge ABA", img: "https://cms-cdn.cwsio.com/wp-content/uploads/2025/01/Bright-Bridge-ABA-1-Thumbnail.jpg" },
-			{ name: "Behavioral Milestones", img: "https://cms-cdn.cwsio.com/wp-content/uploads/2025/04/Behavioral-Milestones-1-Thumbnail.jpg" },
-			{ name: "Advance ABA", img: "https://cms-cdn.cwsio.com/wp-content/uploads/2025/01/Advance-ABA-1-Thumbnail.jpg" },
-			{ name: "Storybook ABA", img: "https://cms-cdn.cwsio.com/wp-content/uploads/2025/01/Storybook-ABA-1-Thumbnail.jpg" },
-		],
-	},
-	{
 		key: "branding",
-		title: "Brand and logo design",
-		blurb: "Identity systems your business deserves to wear.",
+		title: "Logos",
+		blurb: "A complete visual identity — logo, colors, and fonts — built to reflect your brand's message and resonate with your audience.",
 		cta: "See more branding projects",
 		bg: "https://cms-cdn.cwsio.com/wp-content/uploads/2025/04/Nesivos-1-Thumbnail.jpg",
 		accent: "var(--orange)",
@@ -47,7 +33,7 @@ const services = [
 	{
 		key: "custom",
 		title: "Custom systems",
-		blurb: "Bespoke web apps and tools built around how you actually work.",
+		blurb: "Custom-built portals, dashboards, or internal systems — anything your business needs to run efficiently.",
 		cta: "See custom projects",
 		bg: "https://cms-cdn.cwsio.com/wp-content/uploads/2024/10/Filescan-Solutions-6-Thumbnail.jpg",
 		accent: "var(--teal)",
@@ -57,13 +43,24 @@ const services = [
 			{ name: "OnePoint Management", img: "https://cms-cdn.cwsio.com/wp-content/uploads/2023/12/OnePoint-Management-1-Thumbnail.jpg" },
 		],
 	},
-];
-
-services.push(
+	{
+		key: "seo",
+		title: "SEO",
+		blurb: "Strategy, on- and off-page optimization, and content that builds authority — so your business climbs Google and stays there.",
+		cta: "See SEO case studies",
+		bg: "https://cms-cdn.cwsio.com/wp-content/uploads/2025/01/Bright-Bridge-ABA-1-Thumbnail.jpg",
+		accent: "var(--gold)",
+		samples: [
+			{ name: "Bright Bridge ABA", img: "https://cms-cdn.cwsio.com/wp-content/uploads/2025/01/Bright-Bridge-ABA-1-Thumbnail.jpg" },
+			{ name: "Behavioral Milestones", img: "https://cms-cdn.cwsio.com/wp-content/uploads/2025/04/Behavioral-Milestones-1-Thumbnail.jpg" },
+			{ name: "Advance ABA", img: "https://cms-cdn.cwsio.com/wp-content/uploads/2025/01/Advance-ABA-1-Thumbnail.jpg" },
+			{ name: "Storybook ABA", img: "https://cms-cdn.cwsio.com/wp-content/uploads/2025/01/Storybook-ABA-1-Thumbnail.jpg" },
+		],
+	},
 	{
 		key: "marketing",
-		title: "Marketing + Printing",
-		blurb: "Print, decks, social — cohesive across every touchpoint.",
+		title: "Marketing materials",
+		blurb: "Brochures, business cards, decks, and more — designed, printed, and shipped fast.",
 		cta: "See the work",
 		bg: "https://cms-cdn.cwsio.com/wp-content/uploads/2025/08/New-Styles-Sign-1-Thumbnail.jpg",
 		accent: "var(--orange)",
@@ -74,8 +71,8 @@ services.push(
 	},
 	{
 		key: "care",
-		title: "Maintenance & hosting",
-		blurb: "Always-on care so your site keeps quietly working.",
+		title: "Hosting",
+		blurb: "We'll host your site on our encrypted servers and monitor it to keep everything running. Our tech team is available for updates within 48 hours.",
 		cta: "See the work",
 		bg: "https://cms-cdn.cwsio.com/wp-content/uploads/2024/01/Heisinger-Bluffs-1-Thumbnail.jpg",
 		accent: "var(--gold)",
@@ -83,11 +80,16 @@ services.push(
 			{ name: "Heisinger Bluffs", img: "https://cms-cdn.cwsio.com/wp-content/uploads/2024/01/Heisinger-Bluffs-1-Thumbnail.jpg" },
 			{ name: "Maple Leaf Healthcare", img: "https://cms-cdn.cwsio.com/wp-content/uploads/2024/01/Maple-Leaf-Healthcare-1-Thumbnail.jpg" },
 		],
-	}
-);
+	},
+];
+
 const allServices = services;
-const left = services.slice(0, 3);
-const right = services.slice(3, 6);
+// Interleave so the visual reading order is row-by-row:
+//   [0 left] [1 right]
+//   [2 left] [3 right]
+//   [4 left] [5 right]
+const left = services.filter((_, i) => i % 2 === 0);
+const right = services.filter((_, i) => i % 2 === 1);
 ---
 
 <section id="services" class="services" data-svc-zone>

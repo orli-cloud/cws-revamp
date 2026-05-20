@@ -1,10 +1,14 @@
 ---
+// Client logos from /public/logos/ (sourced from the project's `logos/`
+// folder). Placeholder mapping — swap as the real client→reviewer
+// mapping is confirmed.
 const reviews = [
 	{
 		name: "Aron Rosenblum",
 		meta: "10 reviews",
 		when: "a year ago",
 		stars: 5,
+		logo: "/logos/admire-aba.png",
 		body: "To say that CWS is a 5 star rated company is an understatement, CWS is a 10 star rated company. The team at CWS is unparalleled. They own your project from start to finish and don't settle until every detail is satisfactory. They are patient and understand your needs. Their craftsmanship is stellar. Thank you to Martin and the entire team for your help. I am thrilled with my website.",
 	},
 	{
@@ -12,6 +16,7 @@ const reviews = [
 		meta: "5 reviews",
 		when: "2 months ago",
 		stars: 5,
+		logo: "/logos/everest-aba.png",
 		body: "Working with Martin and the entire CWS team was hands down one of the best decisions I made for my business. The quality of work is top-tier, they move fast, and they actually listen! Anytime I needed something adjusted, it was handled immediately. No drama, no excuses. Very professional. Highly recommend!",
 	},
 	{
@@ -19,6 +24,7 @@ const reviews = [
 		meta: "Local Guide · 36 reviews · 29 photos",
 		when: "5 months ago",
 		stars: 5,
+		logo: "/logos/evolve-aba.png",
 		body: "I couldn't be happier with the web design team that built the Kennedy ABA website! From day one, they really listened to my ideas and understood my goals. Their attention to detail is amazing, and they were so accommodating throughout the process, always willing to make adjustments and bring my vision to life.",
 	},
 	{
@@ -26,6 +32,7 @@ const reviews = [
 		meta: "1 review",
 		when: "6 months ago",
 		stars: 5,
+		logo: "/logos/gradual-bh.png",
 		body: "Creative web services designed a website for us that went above and beyond anything we could have expected. The service was top notch, very friendly and they were eager to please. If you are looking for a website that is unique and user friendly, creative web services will be the perfect place to reach out to!",
 	},
 	{
@@ -33,6 +40,7 @@ const reviews = [
 		meta: "2 reviews",
 		when: "3 years ago",
 		stars: 5,
+		logo: "/logos/logo-dark.png",
 		body: "Martin and his team built us a state of the art, customized website that caters to the very specific needs of our organization. The customer service is second to none. Martin's ongoing care and continued availability, always ensuring that every detail of the website operates at the highest level for each campaign, makes him and his team my number one recommendation!",
 	},
 ];
@@ -49,7 +57,13 @@ const reviews = [
 				<strong>TLDR;</strong> Our clients love the product <em>and</em> the process.
 			</p>
 
-			<div class="rating-card">
+			<a
+				class="rating-card"
+				href="https://www.google.com/search?q=Creative+Web+Services+reviews"
+				target="_blank"
+				rel="noopener"
+				aria-label="See our Google reviews — 5.0 stars, 80+ reviews"
+			>
 				<div class="rating-row">
 					<div class="g-mark" aria-hidden="true">G</div>
 					<div class="rating-text">
@@ -67,7 +81,7 @@ const reviews = [
 						<span class="rating-meta">Google · 80+ reviews</span>
 					</div>
 				</div>
-			</div>
+			</a>
 		</aside>
 
 		<div class="stack">
@@ -75,26 +89,22 @@ const reviews = [
 				reviews.map((r, i) => (
 					<article class="card" data-idx={i}>
 						<header class="card-head">
-							<div class="avatar" aria-hidden="true">
-								{r.name
-									.split(" ")
-									.map((n) => n[0])
-									.join("")
-									.slice(0, 2)}
-							</div>
 							<div class="meta">
+								<div class="card-stars">
+									{Array.from({ length: r.stars }).map(() => (
+										<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
+											<path
+												d="M12 2l3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z"
+												fill="currentColor"
+											></path>
+										</svg>
+									))}
+								</div>
 								<div class="who">{r.name}</div>
 								<div class="when">{r.meta} · {r.when}</div>
 							</div>
-							<div class="card-stars">
-								{Array.from({ length: r.stars }).map(() => (
-									<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
-										<path
-											d="M12 2l3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z"
-											fill="currentColor"
-										></path>
-									</svg>
-								))}
+							<div class="avatar" aria-hidden="true">
+								<img src={r.logo} alt="" loading="lazy" decoding="async" />
 							</div>
 						</header>
 						<p class="body">{r.body}</p>
@@ -171,6 +181,16 @@ const reviews = [
 		gap: 8px;
 		max-width: 320px;
 		box-shadow: 0 14px 40px -28px rgba(8, 43, 54, 0.4);
+		color: inherit;
+		text-decoration: none;
+		transition: transform 0.3s cubic-bezier(0.2, 0.7, 0.1, 1),
+			border-color 0.3s ease,
+			box-shadow 0.3s ease;
+	}
+	.rating-card:hover {
+		transform: translateY(-2px);
+		border-color: var(--hairline-strong);
+		box-shadow: 0 22px 50px -28px rgba(8, 43, 54, 0.5);
 	}
 	.rating-row {
 		display: flex;
@@ -254,16 +274,18 @@ const reviews = [
 		border-bottom: 1px solid var(--hairline);
 	}
 	.avatar {
-		width: 40px;
-		height: 40px;
-		border-radius: 50%;
-		background: var(--teal-soft);
-		color: var(--teal-deep);
-		display: grid;
-		place-items: center;
-		font-weight: 700;
-		font-size: 0.86rem;
-		letter-spacing: 0.02em;
+		display: inline-flex;
+		align-items: center;
+		height: 36px;
+		max-width: 96px;
+		flex-shrink: 0;
+	}
+	.avatar img {
+		height: 100%;
+		width: auto;
+		max-width: 100%;
+		object-fit: contain;
+		display: block;
 	}
 	.meta {
 		display: flex;
@@ -284,6 +306,7 @@ const reviews = [
 		color: var(--gold);
 		display: inline-flex;
 		gap: 1px;
+		margin-bottom: 4px;
 	}
 
 	.body {
