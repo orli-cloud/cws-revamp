@@ -1,93 +1,96 @@
 ---
-// Scrollytelling manifesto: pinned section with scenes that fade in/out
+// Scrollytelling manifesto: pinned section with 2 scenes that fade in/out
 // as the user scrolls. Mobile gracefully degrades to a vertical reveal flow.
 
-// Closer headline split into words → each word wraps as an inline-block
-// so it stays intact, but the headline still wraps at word boundaries.
-// Each word's letters reveal one-at-a-time on scroll. "team" is the emph word.
-const closerWords = [
-	{ text: "The", emph: false },
-	{ text: "difference", emph: false },
-	{ text: "is", emph: false },
-	{ text: "the", emph: false },
-	{ text: "team", emph: true },
-	{ text: "you're", emph: false },
-	{ text: "working", emph: false },
-	{ text: "with.", emph: false },
+// Scene 1 — "Meet CWS" with three things we care about, staggered in on scroll.
+// Headline is split into two explicit lines and each char reveals on scroll.
+const meetHeadlineLines = [
+	["We", "care", "about"],
+	["getting", "it", "right."],
+];
+const cares = [
+	"for your goals",
+	"for what your business actually needs",
+	"and every detail that goes into building your online presence.",
+];
+
+// Scene 2 — closer headline split into two explicit lines.
+// Line 1 (white) is the statement; Line 2 (orange `emph`) is the call.
+// Each word's letters reveal one-at-a-time on scroll.
+const closerLines = [
+	[
+		{ text: "We'll", emph: false },
+		{ text: "take", emph: false },
+		{ text: "it", emph: false },
+		{ text: "from", emph: false },
+		{ text: "here.", emph: false },
+	],
+	[
+		{ text: "Let's", emph: true },
+		{ text: "do", emph: true },
+		{ text: "this.", emph: true },
+	],
 ];
 ---
 
 <!-- Top spacer so the Services → Story transition has breathing room. -->
 <div class="story-head" aria-hidden="true"></div>
 
-<section class="story" data-story aria-label="Why the team matters">
+<section class="story" data-story aria-label="Meet CWS">
 	<div class="story-pin">
 		<div class="story-inner">
-			<!-- Scene 1 — setup -->
-			<div class="scene" data-scene="0">
-				<h2 class="scene-h">
-					You're probably looking at a few agencies right now.
+			<!-- Scene 1 — Meet CWS. Headline split into two explicit lines
+			     and each char reveals letter-by-letter via JS. -->
+			<div class="scene meet" data-scene="0">
+				<p class="kicker">Meet CWS</p>
+				<h2 class="scene-h letters" data-letters>
+					{meetHeadlineLines.map((line) => (
+						<span class="hline">
+							{line.flatMap((word, i) => {
+								const w = (
+									<span class="word-w">
+										{Array.from(word).map((ch) => (
+											<span class="char">{ch}</span>
+										))}
+									</span>
+								);
+								return i > 0 ? [" ", w] : [w];
+							})}
+						</span>
+					))}
 				</h2>
-				<p class="scene-aside">
-					<span class="aside-mark" aria-hidden="true"></span>
-					<em>Smart move.</em> We like a discerning client.
-				</p>
-			</div>
-
-			<!-- Scene 2 — the cliché -->
-			<div class="scene" data-scene="1">
-				<p class="scene-lede">Most of what you're reading is about—</p>
-				<ul class="cliche">
-					<li><span>"conversions."</span></li>
-					<li><span>"elevating your brand."</span></li>
-					<li><span>"standing out in a crowded market."</span></li>
+				<ul class="cares">
+					{cares.map((c) => (
+						<li><span>{c}</span></li>
+					))}
 				</ul>
-				<p class="scene-aside muted gated">That's important. <span class="ellipsis">…</span></p>
 			</div>
 
-			<!-- Scene 3 — the shadow -->
-			<div class="scene shadow" data-scene="2">
-				<p class="scene-lede">But building a website can be—</p>
-				<h2 class="scene-h big">
-					<span class="word w-bad">full of surprises.</span>
-					<span class="word w-bad">confusing.</span>
-					<span class="word w-bad">stressful.</span>
-				</h2>
-				<p class="scene-aside muted gated">Forced into something you don't even like.</p>
-			</div>
-
-			<!-- Scene 4 — the light -->
-			<div class="scene light" data-scene="3">
-				<p class="scene-lede">Or it can be—</p>
-				<h2 class="scene-h big">
-					<span class="word w-good">smooth.</span>
-					<span class="word w-good">clear.</span>
-					<span class="word w-good">even&nbsp;exciting.</span>
-				</h2>
-				<p class="scene-aside gated">
-					<em>(Yeah —</em> you <strong>are</strong> making your dream website.<em>)</em>
-				</p>
-			</div>
-
-			<!-- Scene 5 — the point -->
-			<div class="scene closer" data-scene="4">
+			<!-- Scene 2 — closer. Two explicit lines: white statement,
+			     orange call. Letters reveal one-at-a-time on scroll. -->
+			<div class="scene closer" data-scene="1">
 				<h2 class="scene-h xl letters" data-letters>
-					{closerWords.flatMap((word, i) => {
-						const w = (
-							<span class={`word-w${word.emph ? " ital" : ""}`}>
-								{Array.from(word.text).map((ch) => (
-									<span class="char">{ch}</span>
-								))}
-							</span>
-						);
-						return i > 0 ? [" ", w] : [w];
-					})}
+					{closerLines.map((line) => (
+						<span class="hline">
+							{line.flatMap((word, i) => {
+								const w = (
+									<span class={`word-w${word.emph ? " ital" : ""}`}>
+										{Array.from(word.text).map((ch) => (
+											<span class="char">{ch}</span>
+										))}
+									</span>
+								);
+								return i > 0 ? [" ", w] : [w];
+							})}
+						</span>
+					))}
 				</h2>
 			</div>
 
-			<!-- Single continuous line that bridges scene 4 → scene 5.
-			     Anchored in story-inner so it doesn't slide when scene 4
-			     scrolls up, and so it isn't tied to either scene's opacity. -->
+			<!-- Single continuous orange bridge line — anchored in story-inner
+			     (matches the old version's behavior). Stays fixed in viewport
+			     position; only its height is scroll-driven, so it "draws"
+			     downward as the transition progresses. -->
 			<span class="story-line" data-story-line aria-hidden="true"></span>
 		</div>
 	</div>
@@ -100,13 +103,12 @@ const closerWords = [
 
 <style>
 	.story {
-		/* Scroll is distributed across scenes by JS (weighted). Cliché scene
-		   gets more room so its 3 lines can stagger in on scroll. */
+		/* Scroll is distributed across scenes by JS (weighted). */
 		position: relative;
 		background: var(--teal-ink);
 		color: var(--paper);
-		/* This height is overridden on small screens (no pin) */
-		height: 720vh;
+		/* Two scenes — each gets ~150vh of scroll room. Overridden on mobile. */
+		height: 320vh;
 		isolation: isolate;
 	}
 
@@ -171,7 +173,9 @@ const closerWords = [
 		place-items: center;
 	}
 
-	/* Scenes stack on top of each other in the pinned viewport */
+	/* Scenes stack on top of each other in the pinned viewport. They don't
+	   fade — JS translates them up/down in a "filmstrip" tied 1:1 to scroll
+	   so they slide like a real page scroll, not crossfade. */
 	.scene {
 		position: absolute;
 		inset: 0;
@@ -181,74 +185,63 @@ const closerWords = [
 		justify-content: center;
 		gap: clamp(14px, 1.6vw, 22px);
 		padding: clamp(40px, 8vh, 80px) clamp(20px, 5vw, 60px);
-		opacity: 0;
-		transform: translateY(36px) scale(0.985);
-		filter: blur(8px);
-		transition:
-			opacity 700ms cubic-bezier(0.22, 0.61, 0.36, 1),
-			transform 700ms cubic-bezier(0.22, 0.61, 0.36, 1),
-			filter 700ms cubic-bezier(0.22, 0.61, 0.36, 1);
-		will-change: opacity, transform, filter;
+		will-change: transform;
 		pointer-events: none;
 	}
-	.scene.is-active {
-		opacity: 1;
-		transform: none;
-		filter: blur(0);
-		pointer-events: auto;
-	}
-	.scene.is-past {
-		opacity: 0;
-		transform: translateY(-36px) scale(0.985);
-		filter: blur(8px);
-	}
+	/* Initial filmstrip positions: Meet centered, Line + Closer below the
+	   viewport — JS adjusts translateY per scroll frame. */
+	.scene[data-scene="0"] { transform: translateY(0); }
+	.scene[data-scene="1"] { transform: translateY(100vh); }
+	.scene.is-active { pointer-events: auto; }
 
+	/* Eyebrow */
 	.kicker {
 		font-family: var(--font-sans);
-		font-weight: 600;
-		font-size: 0.74rem;
-		letter-spacing: 0.22em;
+		font-weight: 700;
+		font-size: 0.78rem;
+		letter-spacing: 0.24em;
 		text-transform: uppercase;
 		color: var(--gold);
 		margin: 0;
-		display: inline-flex;
-		align-items: center;
-		gap: 12px;
-		opacity: 0.85;
+		opacity: 0;
+		transform: translateY(12px);
+		transition:
+			opacity 550ms cubic-bezier(0.22, 0.61, 0.36, 1),
+			transform 550ms cubic-bezier(0.22, 0.61, 0.36, 1);
 	}
-	.kicker::before,
-	.kicker::after {
-		content: "";
-		width: 28px;
-		height: 1px;
-		background: currentColor;
-		opacity: 0.5;
+	.kicker.is-shown {
+		opacity: 0.9;
+		transform: none;
 	}
-
-	.scene-lede {
-		font-family: var(--font-sans);
-		font-weight: 500;
-		font-size: clamp(16px, 1.4vw, 22px);
-		color: rgba(250, 250, 246, 0.55);
-		margin: 0;
-		letter-spacing: 0.01em;
+	/* Meet headline collapses to zero height before reveal so the kicker
+	   sits centered ALONE first. When the headline expands, the flex
+	   centering reflows and the kicker naturally shifts up. */
+	.scene.meet .scene-h {
+		max-height: 0;
+		opacity: 0;
+		overflow: hidden;
+		transition:
+			max-height 700ms cubic-bezier(0.22, 0.61, 0.36, 1),
+			opacity 500ms cubic-bezier(0.22, 0.61, 0.36, 1);
+	}
+	.scene.meet .scene-h.is-shown {
+		max-height: 60vh;
+		opacity: 1;
 	}
 
 	.scene-h {
 		font-family: var(--font-sans);
 		font-weight: 700;
 		letter-spacing: -0.028em;
-		line-height: 1.02;
+		line-height: 1.08;
 		color: var(--paper);
-		font-size: clamp(36px, 5.4vw, 78px);
+		font-size: clamp(34px, 5vw, 72px);
 		margin: 0;
-		max-width: 18ch;
-	}
-	.scene-h.big {
-		font-size: clamp(40px, 6vw, 92px);
-		display: flex;
-		flex-direction: column;
-		gap: clamp(6px, 0.8vw, 14px);
+		max-width: 26ch;
+		text-wrap: balance;
+		/* Small bottom padding so descenders ("g", "p", etc.) aren't
+		   clipped by the overflow-hidden max-height collapse trick. */
+		padding-bottom: 0.15em;
 	}
 	.scene-h.xl {
 		font-size: clamp(44px, 6.8vw, 104px);
@@ -257,122 +250,74 @@ const closerWords = [
 	.scene-h .ital {
 		color: var(--orange);
 	}
-
-	/* Word reveal — controlled by JS via .is-shown so each line ties to scroll */
-	.word {
-		display: inline-block;
-		opacity: 0;
-		transform: translateY(22px);
-		transition:
-			opacity 550ms cubic-bezier(0.22, 0.61, 0.36, 1),
-			transform 550ms cubic-bezier(0.22, 0.61, 0.36, 1);
-	}
-	.word.is-shown {
-		opacity: 1;
-		transform: none;
+	/* Explicit line break inside a headline split into [word, word, ...] lines. */
+	.scene-h .hline {
+		display: block;
 	}
 
-	/* "Bad" triplet — orange family (brand) */
-	.w-bad:nth-of-type(1) { color: var(--orange); }
-	.w-bad:nth-of-type(2) { color: var(--orange-deep); }
-	.w-bad:nth-of-type(3) { color: var(--orange); }
-
-	/* "Good" triplet — paper, gold, orange (brand only, no light blue) */
-	.w-good:nth-of-type(1) { color: var(--paper); }
-	.w-good:nth-of-type(2) { color: var(--gold); }
-	.w-good:nth-of-type(3) { color: var(--orange); }
-
-	/* Cliché list */
-	.cliche {
+	/* "Cares" list — each item collapses to zero height when hidden so
+	   the kicker + headline naturally sit at the scene's center until the
+	   cares scroll in. As each one expands, the flex layout reflows and
+	   the headline shifts up smoothly to make room. */
+	.cares {
 		list-style: none;
 		padding: 0;
-		margin: 4px 0 0;
+		margin: 0;
 		display: flex;
 		flex-direction: column;
-		gap: clamp(4px, 0.6vw, 10px);
+		/* No flex gap — spacing comes from each item's padding-top so the
+		   gap collapses to 0 along with the item when hidden. */
+		gap: 0;
+		max-width: 60ch;
+		text-align: center;
 	}
-	.cliche li {
+	.cares li {
 		font-family: var(--font-sans);
-		font-weight: 700;
-		letter-spacing: -0.024em;
-		line-height: 1.04;
-		font-size: clamp(30px, 4.6vw, 64px);
+		font-weight: 600;
+		letter-spacing: -0.018em;
+		line-height: 1.3;
+		font-size: clamp(20px, 2.2vw, 30px);
+		padding-top: clamp(12px, 1.6vw, 22px);
 		opacity: 0;
-		transform: translateY(20px);
-		transition:
-			opacity 550ms cubic-bezier(0.22, 0.61, 0.36, 1),
-			transform 550ms cubic-bezier(0.22, 0.61, 0.36, 1);
-	}
-	/* Muted brand tones — these are tired clichés, not the hero copy */
-	.cliche li:nth-child(1) { color: rgba(252, 182, 38, 0.78); }   /* gold */
-	.cliche li:nth-child(2) { color: rgba(250, 250, 246, 0.66); }  /* paper */
-	.cliche li:nth-child(3) { color: rgba(247, 128, 64, 0.78); }   /* orange */
-	.cliche li span {
-		position: relative;
-	}
-	.cliche li.is-shown {
-		opacity: 1;
-		transform: none;
-	}
-
-	.scene-aside {
-		font-family: var(--font-sans);
-		font-weight: 500;
-		font-size: clamp(15px, 1.2vw, 19px);
-		color: rgba(250, 250, 246, 0.7);
-		margin: 0;
-		max-width: 44ch;
-		line-height: 1.5;
-		display: inline-flex;
-		align-items: center;
-		gap: 10px;
-	}
-	.scene-aside.muted {
-		color: rgba(250, 250, 246, 0.45);
-		font-style: italic;
-	}
-	/* Gated asides: hidden until JS reveals them after the trio above completes */
-	.scene-aside.gated {
-		opacity: 0;
+		max-height: 0;
+		overflow: hidden;
 		transform: translateY(12px);
 		transition:
 			opacity 600ms cubic-bezier(0.22, 0.61, 0.36, 1),
+			max-height 600ms cubic-bezier(0.22, 0.61, 0.36, 1),
+			padding-top 600ms cubic-bezier(0.22, 0.61, 0.36, 1),
 			transform 600ms cubic-bezier(0.22, 0.61, 0.36, 1);
 	}
-	.scene-aside.gated.is-shown {
+	.cares li:first-child {
+		padding-top: 0;
+	}
+	.cares li.is-shown {
+		opacity: 1;
+		/* Generous max — sized for the longest care wrapped across 2 lines. */
+		max-height: 240px;
+		transform: none;
+	}
+	.cares li:nth-child(1) span { color: var(--paper); }
+	.cares li:nth-child(2) span { color: var(--gold); }
+	.cares li:nth-child(3) span { color: var(--orange); }
+	.cares li.is-shown {
 		opacity: 1;
 		transform: none;
 	}
-	.scene-aside em {
-		font-style: italic;
-		color: var(--gold);
-		font-weight: 600;
-	}
-	.scene-aside strong {
-		color: var(--paper);
-		font-weight: 700;
-	}
-	.aside-mark {
-		display: inline-block;
-		width: 6px;
-		height: 6px;
-		border-radius: 50%;
-		background: var(--orange);
-		box-shadow: 0 0 0 4px rgba(247, 128, 64, 0.18);
-	}
-	.ellipsis {
-		color: rgba(250, 250, 246, 0.35);
-		letter-spacing: 0.2em;
-	}
 
-	/* Closer scene: generous breathing room above and below the headline.
-	   Line ends ~42vh, headline starts at 50vh (8vh gap), and there's
-	   ~22vh of empty space below the headline before the section ends. */
+	/* Closer scene — top-aligned with padding so the headline lands BELOW
+	   the bridge line (which extends from 22vh to ~42vh). */
 	.scene.closer {
-		gap: clamp(14px, 2.4vh, 28px);
+		gap: clamp(10px, 1.6vh, 20px);
 		justify-content: flex-start;
 		padding-top: 50vh;
-		padding-bottom: 22vh;
+	}
+	/* Top line of the closer headline is noticeably smaller than the
+	   orange call below it, so "Let's do this." reads as the louder
+	   call to action. */
+	.scene.closer .scene-h .hline:first-child {
+		font-size: clamp(26px, 3.4vw, 52px);
+		font-weight: 600;
 	}
 	.letters {
 		max-width: 18ch;
@@ -395,24 +340,11 @@ const closerWords = [
 		opacity: 1;
 	}
 
-	/* Dark teal head spacer for breathing room at the Services → Story boundary. */
-	.story-head {
-		height: clamp(72px, 9vw, 120px);
-		background: var(--teal-ink);
-	}
-
-	/* Dark teal tail below the story section so the closer headline has
-	   breathing room before the next (paper) section starts. Height
-	   mirrors the next section's padding-top for visual symmetry. */
-	.story-tail {
-		height: clamp(80px, 10vw, 140px);
-		background: var(--teal-ink);
-	}
-
-	/* Single continuous line spanning scene 4 → scene 5. Anchored at the
-	   story-inner level so its TOP never moves and it never disappears.
-	   Top is in the upper-middle of the viewport so the closer headline
-	   can be positioned right below where the line ends. */
+	/* Single continuous line — anchored in story-inner, top is fixed in
+	   the viewport so it never moves; only its height is scroll-driven.
+	   Identical behavior to the old Story version. Max height = 20vh,
+	   line bottom lands at 22vh + 20vh = 42vh (with 8vh of room before
+	   the closer headline at center). */
 	.story-line {
 		position: absolute;
 		top: 22vh;
@@ -425,18 +357,21 @@ const closerWords = [
 		box-shadow: 0 0 16px rgba(247, 128, 64, 0.42);
 		transform-origin: top center;
 		z-index: 5;
-		/* JS pushes height per-frame tied to scroll; a tiny smoothing
-		   transition softens sub-pixel jitter without lagging. */
+		/* Small smoothing transition takes the edge off sub-pixel jitter
+		   between scroll frames without lagging behind the scrollbar. */
 		transition: height 60ms linear;
 		pointer-events: none;
 	}
-	/* While JS is scroll-driving scene 4 upward, disable transitions
-	   so the position tracks the scrollbar instead of lagging. */
-	.scene.light.is-scrolling-up {
-		opacity: 1;
-		filter: blur(0);
-		transition: none;
-		pointer-events: none;
+
+	/* Dark teal spacers framing the section so the paper→teal→paper
+	   transitions have breathing room. */
+	.story-head {
+		height: clamp(72px, 9vw, 120px);
+		background: var(--teal-ink);
+	}
+	.story-tail {
+		height: clamp(80px, 10vw, 140px);
+		background: var(--teal-ink);
 	}
 
 	/* Mobile fallback — no pinning, scenes flow vertically */
@@ -471,32 +406,49 @@ const closerWords = [
 			opacity: 1;
 			transform: none;
 		}
-		.scene-h, .scene-h.big, .scene-h.xl {
+		.scene-h, .scene-h.xl {
 			text-align: left;
 			max-width: none;
 		}
-		.scene-h.big { flex-direction: column; gap: 6px; }
-		.word, .word.is-shown { opacity: 1; transform: none; }
-		.cliche li, .cliche li.is-shown { opacity: 1; transform: none; }
+		.cares { max-width: none; text-align: left; }
+		.cares li, .cares li.is-shown { opacity: 1; transform: none; }
 		.char, .char.is-shown { opacity: 1; }
+		.kicker, .kicker.is-shown { opacity: 0.9; transform: none; }
+		.scene.meet .scene-h,
+		.scene.meet .scene-h.is-shown {
+			opacity: 1;
+			max-height: none;
+			overflow: visible;
+			transform: none;
+		}
+		.cares li, .cares li.is-shown {
+			max-height: none;
+			overflow: visible;
+		}
 		.story-line { display: none; }
-		.scene-aside.gated, .scene-aside.gated.is-shown { opacity: 1; transform: none; }
-		.kicker::after { display: none; }
 	}
 
 	@media (prefers-reduced-motion: reduce) {
 		.scene,
 		.scene.is-past,
-		.word,
-		.cliche li,
-		.char,
-		.story-line,
-		.scene-aside.gated {
+		.cares li,
+		.char {
 			transition: none;
 		}
 		.char { opacity: 1; }
+		.cares li { opacity: 1; transform: none; }
+		.kicker { opacity: 0.9; transform: none; }
+		.scene.meet .scene-h {
+			opacity: 1;
+			max-height: none;
+			overflow: visible;
+			transform: none;
+		}
+		.cares li {
+			max-height: none;
+			overflow: visible;
+		}
 		.story-line { display: none; }
-		.scene-aside.gated { opacity: 1; transform: none; }
 		.scene {
 			opacity: 1;
 			transform: none;
@@ -526,36 +478,26 @@ const closerWords = [
 	const isSmall = window.matchMedia("(max-width: 720px)").matches;
 
 	if (section && scenes.length && !reduce && !isSmall) {
-		// Weighted slots — scenes with 3 staggered items get more scroll room
-		// so each item ties to a portion of the user's scroll, not all at once.
-		// Closer scene gets extra room for its letter reveal + line draw.
-		// Order: [setup, cliché, shadow, light, closer]
-		const weights = [1, 2.2, 2.2, 2.2, 3];
-		const totalWeight = weights.reduce((a, b) => a + b, 0);
-		const ranges: [number, number][] = [];
-		{
-			let cum = 0;
-			for (const w of weights) {
-				const start = cum / totalWeight;
-				cum += w;
-				ranges.push([start, cum / totalWeight]);
-			}
-		}
+		// 2-slot filmstrip:
+		//   slot 0 = Meet (cares stagger here)
+		//   slot 1 = Closer (line grows above it as it rises, letters reveal once centered)
+		//
+		// Phases:
+		//   0.00 – 0.45  PAUSE @ Meet — kicker stays alone, then headline
+		//                expands, then cares stagger in with breathing room
+		//                between each so it doesn't feel rapid-fire.
+		//   0.45 – 0.75  SLIDE — Meet exits up; closer + its child line slide
+		//                up together; line height grows from 0 to full at the
+		//                same rate, so the line draws in as the closer rises.
+		//   0.75 – 1.00  PAUSE @ Closer — letters reveal
+		const P_PAUSE_END = 0.45;
+		const P_SLIDE_END = 0.75;
 
-		// Per-scene sub-reveal definitions (which scenes have staggered items)
-		type SubReveal = { sceneIdx: number; selector: string; thresholds: number[] };
-		const subReveals: SubReveal[] = [
-			// All reveals happen in the FIRST HALF of each scene's scroll so
-			// the user has the second half to actually read what just appeared
-			// before the next scene takes over.
-			{ sceneIdx: 1, selector: ".cliche li",      thresholds: [0.08, 0.22, 0.36] },
-			{ sceneIdx: 2, selector: ".word",           thresholds: [0.08, 0.22, 0.36] },
-			{ sceneIdx: 3, selector: ".word",           thresholds: [0.08, 0.22, 0.36] },
-			// Closing aside in each multi-line scene appears after the trio resolves
-			{ sceneIdx: 1, selector: ".scene-aside.gated", thresholds: [0.50] },
-			{ sceneIdx: 2, selector: ".scene-aside.gated", thresholds: [0.50] },
-			{ sceneIdx: 3, selector: ".scene-aside.gated", thresholds: [0.50] },
-		];
+		const meetScene = scenes[0];
+		const closerScene = scenes[1];
+		const storyLine = section.querySelector<HTMLElement>("[data-story-line]");
+		// Matches old version: max 20vh, capped at 180px.
+		const lineMaxH = () => Math.min(180, Math.round(window.innerHeight * 0.20));
 
 		let raf = 0;
 
@@ -567,81 +509,80 @@ const closerWords = [
 			const traveled = Math.max(0, Math.min(scrollable, -rect.top));
 			const progress = traveled / scrollable;
 
-			// Find active scene by range
-			let activeIndex = ranges.length - 1;
-			for (let i = 0; i < ranges.length; i++) {
-				if (progress < ranges[i][1]) { activeIndex = i; break; }
+			// Slide offset: 0 (Meet centered) → 1 (Closer centered).
+			let offset = 0;
+			if (progress < P_PAUSE_END) {
+				offset = 0;
+			} else if (progress < P_SLIDE_END) {
+				offset = (progress - P_PAUSE_END) / (P_SLIDE_END - P_PAUSE_END);
+			} else {
+				offset = 1;
 			}
 
-			scenes.forEach((scene, i) => {
-				scene.classList.toggle("is-active", i === activeIndex);
-				scene.classList.toggle("is-past", i < activeIndex);
+			const vh = window.innerHeight;
+			// Meet slides up out of view; Closer slides up from below into view.
+			if (meetScene)   meetScene.style.transform   = `translateY(${-offset * vh}px)`;
+			if (closerScene) closerScene.style.transform = `translateY(${(1 - offset) * vh}px)`;
+			// Bridge line — anchored at top:22vh in story-inner (matches old
+			// version). Hidden during Meet pause, draws downward during the
+			// slide transition, stays at full height during Closer pause.
+			if (storyLine) storyLine.style.height = `${offset * lineMaxH()}px`;
+
+			// Pointer-events: meet active in pause phase 1, closer active in pause phase 2.
+			scenes.forEach((s, i) => {
+				const isActive = (i === 0 && offset < 0.5) || (i === 1 && offset >= 0.5);
+				s.classList.toggle("is-active", isActive);
 			});
 
-			// Sub-reveals: each item shows when local progress passes its threshold.
-			// Naturally handles scroll-up (items hide again as progress falls).
-			for (const sr of subReveals) {
-				const scene = scenes[sr.sceneIdx];
-				if (!scene) continue;
-				const [s, e] = ranges[sr.sceneIdx];
-				const local = (progress - s) / (e - s);
-				const items = scene.querySelectorAll<HTMLElement>(sr.selector);
-				items.forEach((item, idx) => {
-					const threshold = sr.thresholds[idx] ?? 0;
-					item.classList.toggle("is-shown", local >= threshold);
-				});
-			}
+			// Sequential reveal across Phase 1 (Meet centered):
+			//   1) MEET CWS kicker alone in the center
+			//   2) Headline expands (kicker shifts up via flex re-centering)
+			//      and reveals letter-by-letter on scroll
+			//   3) Cares appear one by one, headline shifts up further
+			if (meetScene) {
+				const local = Math.min(1, progress / P_PAUSE_END);
+				const kicker = meetScene.querySelector<HTMLElement>(".kicker");
+				const headline = meetScene.querySelector<HTMLElement>(".scene-h");
+				if (kicker) kicker.classList.toggle("is-shown", local >= 0.03);
 
-			// Scene 4 (light): scroll-drives upward 1:1 with scrollbar so it
-			// behaves like a real page scroll out of the way.
-			const lightScene = scenes[3];
-			if (lightScene) {
-				const [cs, ce] = ranges[4];
-				if (progress >= cs) {
-					const closerLocal = Math.max(0, Math.min(1, (progress - cs) / (ce - cs)));
-					const scene5RangePx = (ce - cs) * scrollable;
-					const slidePx = closerLocal * scene5RangePx;
-					lightScene.classList.add("is-scrolling-up");
-					lightScene.style.transform = `translateY(${-slidePx}px)`;
-				} else {
-					lightScene.classList.remove("is-scrolling-up");
-					lightScene.style.transform = "";
-				}
-			}
+				// MEET CWS holds alone until well into the phase — headline
+				// expansion is held back so the eyebrow has real space to breathe.
+				const hExpand = 0.30;
+				const hStart = 0.32, hEnd = 0.50;
+				if (headline) headline.classList.toggle("is-shown", local >= hExpand);
 
-			// Single continuous line that bridges scene 4 → scene 5.
-			// Starts at scene 4's late local (after aside has settled) and
-			// continues growing through scene 5 until letters are about to
-			// reveal. Never disappears or reappears — one persistent element.
-			const storyLine = section.querySelector<HTMLElement>("[data-story-line]");
-			if (storyLine) {
-				const [ls, le] = ranges[3];
-				const [cs, ce] = ranges[4];
-				// Convert "scene 4 local 0.78" and "closer local 0.80" to
-				// total story-progress values so we get one smooth range.
-				const drawStart = ls + 0.78 * (le - ls);
-				const drawEnd = cs + 0.80 * (ce - cs);
-				const dp = Math.max(0, Math.min(1, (progress - drawStart) / (drawEnd - drawStart)));
-				// Max height = 20vh, so the line bottom lands at 22vh + 20vh =
-				// 42vh, with 8vh of breathing room before the headline at 50vh.
-				const maxH = Math.min(180, Math.round(window.innerHeight * 0.20));
-				storyLine.style.height = `${dp * maxH}px`;
-			}
-
-			// Closer letters: reveal only after the single line is fully
-			// extended (well after scene 4 is off-screen and line is at max).
-			const closerScene = scenes[4];
-			if (closerScene) {
-				const [cs, ce] = ranges[4];
-				const local = Math.max(0, Math.min(1, (progress - cs) / (ce - cs)));
-				const chars = closerScene.querySelectorAll<HTMLElement>(".char");
-				const startT = 0.82, endT = 0.99;
-				const span = endT - startT;
-				const total = Math.max(1, chars.length - 1);
-				chars.forEach((el, idx) => {
-					const t = startT + (idx / total) * span;
+				const meetChars = meetScene.querySelectorAll<HTMLElement>(".char");
+				const hSpan = hEnd - hStart;
+				const hTotal = Math.max(1, meetChars.length - 1);
+				meetChars.forEach((el, idx) => {
+					const t = hStart + (idx / hTotal) * hSpan;
 					el.classList.toggle("is-shown", local >= t);
 				});
+
+				// Cares stagger with a generous gap between each so the reader
+				// has time to read one before the next arrives.
+				const items = meetScene.querySelectorAll<HTMLElement>(".cares li");
+				const careThresholds = [0.62, 0.78, 0.94];
+				items.forEach((item, idx) => {
+					item.classList.toggle("is-shown", local >= (careThresholds[idx] ?? 0));
+				});
+			}
+
+			// Closer letters: reveal during pause phase 2 (Closer centered).
+			if (closerScene) {
+				const chars = closerScene.querySelectorAll<HTMLElement>(".char");
+				if (progress < P_SLIDE_END) {
+					chars.forEach((c) => c.classList.remove("is-shown"));
+				} else {
+					const local = (progress - P_SLIDE_END) / (1 - P_SLIDE_END);
+					const startT = 0.05, endT = 0.80;
+					const span = endT - startT;
+					const total = Math.max(1, chars.length - 1);
+					chars.forEach((el, idx) => {
+						const t = startT + (idx / total) * span;
+						el.classList.toggle("is-shown", local >= t);
+					});
+				}
 			}
 		};
 
